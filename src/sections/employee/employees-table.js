@@ -11,12 +11,12 @@ import {
   TableRow,
   SvgIcon,
   Switch,
+  Button,
 } from "@mui/material";
 import { Scrollbar } from "src/components/scrollbar";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@heroicons/react/24/solid/PencilIcon";
 import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
-import Check from "@heroicons/react/24/solid/CheckCircleIcon";
 
 export const EmployeeTable = (props) => {
   const {
@@ -46,7 +46,7 @@ export const EmployeeTable = (props) => {
                 </TableRow>
               ) : (
                 <TableRow>
-                  <TableCell>First name</TableCell>
+                  <TableCell>name</TableCell>
                   <TableCell>options</TableCell>
                 </TableRow>
               )}
@@ -57,7 +57,7 @@ export const EmployeeTable = (props) => {
                 // const createdAt = format(customer.clCreatedAt, "dd/MM/yyyy");
                 return (
                   <TableRow hover key={item.empUuid} selected={isSelected}>
-                    <TableCell>{item.empName}</TableCell>
+                    <TableCell>{`${item.empName} ${item.empLastname}`}</TableCell>
                     {props.isSecondary === 1 ? null : <TableCell>{item.empLastname}</TableCell>}
                     {props.isSecondary === 1 ? null : <TableCell>{item.empIdentCard}</TableCell>}
                     {props.isSecondary === 1 ? null : (
@@ -95,21 +95,15 @@ export const EmployeeTable = (props) => {
                           </IconButton>
                         </Stack>
                       ) : (
-                        <Stack direction="row" alignItems="center" spacing={0}>
-                          <IconButton
-                            aria-label="delete"
-                            color="primary"
-                            onClick={() => {
-                              props.OnSee(item);
-                            }}
-                          >
-                            {
-                              <SvgIcon fontSize="small">
-                                <Check />
-                              </SvgIcon>
-                            }
-                          </IconButton>
-                        </Stack>
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            props.OnSee(item);
+                          }}
+                          id="modal-button"
+                        >
+                          Add
+                        </Button>
                       )}
                     </TableCell>
                   </TableRow>

@@ -121,6 +121,7 @@ export const SideNavItem = (props) => {
               },
             }}
             onClick={handleClick}
+            key={title}
           >
             {icon && (
               <Box
@@ -212,6 +213,7 @@ export const SideNavItem = (props) => {
                   >
                     {icon && (
                       <Box
+                        key={item.icon}
                         component="span"
                         sx={{
                           alignItems: "center",
@@ -231,6 +233,7 @@ export const SideNavItem = (props) => {
                     )}
                     <Box
                       component="span"
+                      key={item.path}
                       sx={{
                         color: "neutral.400",
                         flexGrow: 1,

@@ -187,8 +187,8 @@ const Page = () => {
   };
 
   useEffect(() => {
-    getData(page);
     localStorage.setItem("rowsPerPage", "5");
+    getData(page);
   }, []);
 
   return (
@@ -245,6 +245,9 @@ const Page = () => {
                 filter(res);
               }}
               isShow={isShow}
+              refresh={() => {
+                getData(page);
+              }}
             />
 
             <EmployeeTable

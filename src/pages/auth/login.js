@@ -25,6 +25,7 @@ const Page = () => {
   const auth = useAuth();
   const [method, setMethod] = useState("email");
   const [loading, setLoading] = useState(false);
+  const [company, setCompany] = useState(JSON.parse(localStorage.getItem("userStorage")));
   const formik = useFormik({
     initialValues: {
       email: "",

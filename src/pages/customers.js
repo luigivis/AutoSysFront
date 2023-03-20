@@ -185,8 +185,8 @@ const Page = () => {
   };
 
   useEffect(() => {
-    getCustomers(page);
     localStorage.setItem("rowsPerPage", "5");
+    getCustomers(page);
   }, []);
 
   return (
@@ -242,6 +242,9 @@ const Page = () => {
                 filter(res);
               }}
               isShow={isShow}
+              refresh={() => {
+                getCustomers(page);
+              }}
             />
             <CustomersTable
               count={count}

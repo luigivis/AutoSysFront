@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import {
   Button,
@@ -11,9 +10,9 @@ import {
   TextField,
   Divider,
   CardActions,
-  Fab,
+  SvgIcon,
 } from "@mui/material";
-import Icon from "@heroicons/react/24/solid/MagnifyingGlassCircleIcon";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import ModalEmployeeTable from "src/sections/global/employee-table-modal";
 
 const style = {
@@ -88,25 +87,23 @@ const UserModal = (props) => {
                   required
                 />
               </Grid>
-              {props.edit === "New" ? (
-                <Grid xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Password"
-                    id="password"
-                    value={data.password}
-                    type="password"
-                    onChange={(e) =>
-                      setData((item) => ({
-                        ...item,
-                        ...{ password: e.target.value },
-                      }))
-                    }
-                    required
-                  />
-                </Grid>
-              ) : null}
-
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Password"
+                  id="password"
+                  value={data.password}
+                  type="password"
+                  autoComplete="new-password"
+                  onChange={(e) =>
+                    setData((item) => ({
+                      ...item,
+                      ...{ password: e.target.value },
+                    }))
+                  }
+                  required
+                />
+              </Grid>
               <Grid xs={12} md={12}>
                 <TextField
                   fullWidth
@@ -144,16 +141,15 @@ const UserModal = (props) => {
                       />
                     </Grid>
                     <Grid xs={12} md={2}>
-                      <Fab
-                        color="primary"
-                        aria-label="add"
-                        size="small"
+                      <Button
+                        variant="contained"
                         onClick={() => {
                           setOpenTable(true);
                         }}
+                        id="modal-button"
                       >
-                        <Icon />
-                      </Fab>
+                        Search
+                      </Button>
                     </Grid>
                   </Grid>
                 </Grid>

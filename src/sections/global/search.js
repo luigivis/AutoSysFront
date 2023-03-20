@@ -4,49 +4,65 @@ import {
   InputAdornment,
   OutlinedInput,
   SvgIcon,
-  Box,
   CircularProgress,
   Grid,
+  Button,
 } from "@mui/material";
-import { useState } from "react";
+import { Box } from "@mui/system";
+import { useState, useEffect } from "react";
 
 export const Search = (props) => {
   const [text, setText] = useState("");
+  useEffect(() => {
+    setText("");
+  }, []);
   return (
     <>
       <Card sx={{ p: 2 }}>
         <Grid container spacing={2} alignItems="center" sx={{ margin: "5px" }}>
-          <Grid xs={12} md={4}>
-            <OutlinedInput
-              defaultValue=""
-              fullWidth
-              placeholder={`Search...`}
-              onChange={(e) => {
-                setText(e.target.value);
-              }}
-              startAdornment={
-                <InputAdornment position="start">
-                  <SvgIcon color="action" fontSize="small">
-                    <MagnifyingGlassIcon />
-                  </SvgIcon>
-                </InputAdornment>
-              }
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  props.OnSearch(text);
-                }
-              }}
-              sx={{ maxWidth: 500 }}
-            />
-          </Grid>
-          <CircularProgress
-            disableShrink
-            sx={{
-              marginLeft: "10px",
-              marginTop: "5px",
-              display: props.isShow == 1 ? "center" : "none",
+          <OutlinedInput
+            value={text}
+            fullWidth
+            placeholder={`Search...`}
+            onChange={(e) => {
+              setText(e.target.value);
             }}
+            startAdornment={
+              <InputAdornment position="start">
+                <SvgIcon color="action" fontSize="small">
+                  <MagnifyingGlassIcon />
+                </SvgIcon>
+              </InputAdornment>
+            }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                props.OnSearch(text);
+              }
+            }}
+            sx={{ maxWidth: 500 }}
           />
+          <Box>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setText("");
+                props.refresh();
+              }}
+              id="modal-button"
+              sx={{ marginLeft: "10px" }}
+            >
+              Clear
+            </Button>
+          </Box>
+          <Box>
+            <CircularProgress
+              disableShrink
+              sx={{
+                display: props.isShow == 1 ? "center" : "none",
+                marginLeft: "10px",
+              }}
+            />
+          </Box>
         </Grid>
       </Card>
     </>

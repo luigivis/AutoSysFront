@@ -22,6 +22,7 @@ export const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+  const company = JSON.parse(localStorage.getItem("company"));
 
   const content = (
     <Scrollbar
@@ -52,7 +53,7 @@ export const SideNav = (props) => {
               width: 32,
             }}
           >
-            <Logo />
+            <Logo img={company.components.logoImg} />
           </Box>
           <Box
             sx={{
@@ -68,7 +69,7 @@ export const SideNav = (props) => {
           >
             <div>
               <Typography color="inherit" variant="subtitle1">
-                EmpresaNombre
+                {company.components.systemName}
               </Typography>
             </div>
             <SvgIcon fontSize="small" sx={{ color: "neutral.500" }}>
@@ -96,21 +97,25 @@ export const SideNav = (props) => {
           >
             {items.map((item) => {
               const active = item.path ? pathname === item.path : false;
-
-              return (
-                <SideNavItem
-                  active={active}
-                  disabled={item.disabled}
-                  external={item.external}
-                  icon={item.icon}
-                  key={item.title}
-                  path={item.path}
-                  title={item.title}
-                  subNav={item.subNav}
-                  iconOpened={item.iconOpened}
-                  iconClosed={item.iconClosed}
-                />
+              var exist = company.components.modulesAcces.find(
+                (access) => access.microserviceName === item.title
               );
+              if (exist) {
+                return (
+                  <SideNavItem
+                    active={active}
+                    disabled={item.disabled}
+                    external={item.external}
+                    icon={item.icon}
+                    key={item.title}
+                    path={item.path}
+                    title={item.title}
+                    subNav={item.subNav}
+                    iconOpened={item.iconOpened}
+                    iconClosed={item.iconClosed}
+                  />
+                );
+              }
             })}
           </Stack>
         </Box>
@@ -126,7 +131,7 @@ export const SideNav = (props) => {
         open
         PaperProps={{
           sx: {
-            backgroundColor: "neutral.800",
+            backgroundColor: `${company.components.palettColor.black}`,
             color: "common.white",
             width: 280,
           },

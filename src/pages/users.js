@@ -44,7 +44,7 @@ const Page = () => {
     getData(page);
   }, []);
 
-  const getData = async (pageRow = 0, SizeRow = rowsPerPage) => {
+  const getData = async (pageRow = 0) => {
     let size = localStorage.getItem("rowsPerPage");
     var response = await getElements(`${USER.list}?page=${pageRow}&size=${size}`, {
       jwt: `${user.id}`,
@@ -88,7 +88,7 @@ const Page = () => {
         ...{
           usId: obj.usId,
           usUsername: obj.usUsername,
-          password: obj.password,
+          password: "",
           empName: obj.usEmployeeUuid.empName,
           usRoleId: obj.usRoleId,
           usCreatedAt: obj.usCreatedAt,
@@ -190,8 +190,8 @@ const Page = () => {
   };
 
   useEffect(() => {
-    getData(page);
     localStorage.setItem("rowsPerPage", "5");
+    getData(page);
   }, []);
 
   return (
@@ -247,6 +247,9 @@ const Page = () => {
                 filter(res);
               }}
               isShow={isShow}
+              refresh={() => {
+                getData(page);
+              }}
             />
             <UserTable
               count={count}

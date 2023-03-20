@@ -122,6 +122,9 @@ const ModalEmployeeTable = (props) => {
                     filter(res);
                   }}
                   isShow={isShow}
+                  refresh={() => {
+                    getEmployees(page);
+                  }}
                 />
               </Grid>
               <Grid xs={12} md={12}>

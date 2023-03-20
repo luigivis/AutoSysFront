@@ -80,6 +80,7 @@ export const AccountProfileDetails = () => {
                   label="Old password"
                   name="oldPassword"
                   type={"password"}
+                  autoComplete="new-password"
                   onChange={handleChange}
                   required
                   value={values.oldPassword}
@@ -91,6 +92,7 @@ export const AccountProfileDetails = () => {
                   label="New Password"
                   name="newPassword"
                   type={"password"}
+                  autoComplete="new-password"
                   onChange={handleChange}
                   required
                   value={values.newPassword}
@@ -102,6 +104,7 @@ export const AccountProfileDetails = () => {
                   label="New Password Verification"
                   name="newPasswordVerification"
                   type={"password"}
+                  autoComplete="new-password"
                   onChange={handleChange}
                   required
                   value={values.newPasswordVerification}
