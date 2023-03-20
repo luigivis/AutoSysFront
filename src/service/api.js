@@ -1,3 +1,4 @@
+const domain = window.location.host;
 export async function login(url, user, password, headers) {
   return fetch(url, {
     method: "POST",
