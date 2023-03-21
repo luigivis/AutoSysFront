@@ -78,7 +78,7 @@ export const EmployeeTable = (props) => {
                         <Stack direction="row" alignItems="center" spacing={0}>
                           <IconButton
                             aria-label="delete"
-                            color="primary"
+                            sx={{ color: company.components.paletteColor.button }}
                             onClick={() => props.OnEdit(item)}
                           >
                             {
@@ -87,17 +87,20 @@ export const EmployeeTable = (props) => {
                               </SvgIcon>
                             }
                           </IconButton>
-                          <IconButton aria-label="delete" color="error">
+                          {/* <IconButton aria-label="delete" color="error">
                             {
                               <SvgIcon fontSize="small">
                                 <DeleteIcon />
                               </SvgIcon>
                             }
-                          </IconButton>
+                          </IconButton> */}
                         </Stack>
                       ) : (
                         <Button
                           variant="contained"
+                          sx={{
+                            backgroundColor: `${company.components.paletteColor.button} !important`,
+                          }}
                           onClick={() => {
                             props.OnSee(item);
                           }}

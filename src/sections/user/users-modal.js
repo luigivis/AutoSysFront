@@ -10,10 +10,9 @@ import {
   TextField,
   Divider,
   CardActions,
-  SvgIcon,
 } from "@mui/material";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import ModalEmployeeTable from "src/sections/global/employee-table-modal";
+import { ButtonCustomSend } from "../global/ButtonCustomSend";
 
 const style = {
   position: "absolute",
@@ -41,6 +40,7 @@ const rol = [
 ];
 
 const UserModal = (props) => {
+  const company = JSON.parse(localStorage.getItem("company"));
   const [data, setData] = React.useState(props.data);
   const [openTable, setOpenTable] = React.useState(false);
   React.useEffect(() => {
@@ -143,6 +143,9 @@ const UserModal = (props) => {
                     <Grid xs={12} md={2}>
                       <Button
                         variant="contained"
+                        sx={{
+                          backgroundColor: `${company.components.paletteColor.button} !important`,
+                        }}
                         onClick={() => {
                           setOpenTable(true);
                         }}
@@ -188,14 +191,11 @@ const UserModal = (props) => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button
-            variant="contained"
-            onClick={() => {
+          <ButtonCustomSend
+            OnSend={() => {
               props.OnSend(data);
             }}
-          >
-            Save
-          </Button>
+          ></ButtonCustomSend>
         </CardActions>
       </Card>
     </Modal>

@@ -12,6 +12,7 @@ import {
   Divider,
   CardActions,
 } from "@mui/material";
+import { ButtonCustomSend } from "../global/ButtonCustomSend";
 
 const style = {
   position: "absolute",
@@ -150,14 +151,11 @@ const CustomerModal = (props) => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button
-            variant="contained"
-            onClick={() => {
+          <ButtonCustomSend
+            OnSend={() => {
               props.OnSend(customer);
             }}
-          >
-            Save
-          </Button>
+          ></ButtonCustomSend>
         </CardActions>
       </Card>
     </Modal>

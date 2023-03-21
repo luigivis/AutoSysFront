@@ -74,11 +74,6 @@ const ModalEmployeeTable = (props) => {
   };
   React.useEffect(() => {
     getEmployees(page, rowsPerPage);
-    const element = document.getElementById("sppps");
-    if (element) {
-      console.log(element);
-      element.scrollIntoView({ behavior: "smooth" });
-    }
   }, []);
   return (
     <Modal

@@ -85,8 +85,7 @@ export const UserTable = (props) => {
                     <TableCell>
                       <Stack direction="row" alignItems="center" spacing={0}>
                         <IconButton
-                          aria-label="delete"
-                          color="primary"
+                          sx={{ color: company.components.paletteColor.button }}
                           onClick={() => props.OnEdit(item)}
                         >
                           {
@@ -95,13 +94,13 @@ export const UserTable = (props) => {
                             </SvgIcon>
                           }
                         </IconButton>
-                        <IconButton aria-label="delete" color="error">
+                        {/* <IconButton aria-label="delete" color="error">
                           {
                             <SvgIcon fontSize="small">
                               <DeleteIcon />
                             </SvgIcon>
                           }
-                        </IconButton>
+                        </IconButton> */}
                       </Stack>
                     </TableCell>
                   </TableRow>
