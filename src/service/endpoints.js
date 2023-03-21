@@ -3,6 +3,7 @@ export const LOGIN = {
   login: `${BASE_URL}security/auth`,
   logout: `${BASE_URL}security/logout`,
   changePassword: `${BASE_URL}security/changePassword`,
+  company: `${BASE_URL}info/list/{domain}`,
 };
 
 export const CLIENTS = {

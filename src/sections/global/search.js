@@ -12,6 +12,7 @@ import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
 
 export const Search = (props) => {
+  const company = JSON.parse(localStorage.getItem("company"));
   const [text, setText] = useState("");
   useEffect(() => {
     setText("");
@@ -44,12 +45,15 @@ export const Search = (props) => {
           <Box>
             <Button
               variant="contained"
+              sx={{
+                backgroundColor: `${company.components.paletteColor.button} !important`,
+                marginLeft: "10px",
+              }}
               onClick={() => {
                 setText("");
                 props.refresh();
               }}
               id="modal-button"
-              sx={{ marginLeft: "10px" }}
             >
               Clear
             </Button>

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from "react";
 import PropTypes from "prop-types";
-import { login, logout } from "src/service/api";
+import { login, logout, getElements } from "src/service/api";
 import { LOGIN } from "src/service/endpoints";
 
 const HANDLERS = {
@@ -64,41 +64,15 @@ export const AuthProvider = (props) => {
   const initialized = useRef(false);
 
   const initialize = async () => {
+    const domain = window.location.host;
     // Prevent from calling twice in development mode with React.StrictMode enabled
-    let company = {
-      components: {
-        titleName: "OptimunTech",
-        logoImg:
-          "https://www.google.com/logos/doodles/2023/celebrating-mama-cax-6753651837110013.3-l.png",
-        systemStatus: {
-          code: 2,
-          message: "PAGO PENDIENTE",
-        },
-        systemName: "OptimunTech Automotriz",
-        modulesAcces: [
-          {
-            microserviceName: "Employees",
-          },
-          {
-            microserviceName: "Users",
-          },
-          {
-            microserviceName: "Customers",
-          },
-          {
-            microserviceName: "Cars",
-          },
-        ],
-        palettColor: {
-          sky: "#879AB5",
-          orange: "#FA6C17",
-          black: "#000000",
-          Gray: "#CCCCCC",
-          gray_black: "#3F485B",
-        },
-      },
-    };
-    localStorage.setItem("company", JSON.stringify(company));
+    let company = await getElements(LOGIN.company.replace("{domain}", "optimun.lapsystec.com"));
+    console.log(company);
+
+    localStorage.setItem(
+      "company",
+      JSON.stringify(company.status == 200 ? company.response : null)
+    );
     if (initialized.current) {
       return;
     }

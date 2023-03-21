@@ -1,7 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import Head from "next/head";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { CustomersTable } from "src/sections/customer/customers-table";
 import { Search } from "src/sections/global/search";
@@ -12,6 +11,8 @@ import { CLIENTS } from "../service/endpoints";
 import { showAlert } from "src/sections/global/alert";
 import { useAuthContext } from "src/contexts/auth-context";
 import { FILTER } from "../service/endpoints";
+import { ButtonCustom } from "src/sections/global/ButtonCustom";
+
 const Page = () => {
   const { user } = useAuthContext();
   const [page, setPage] = useState(0);
@@ -209,20 +210,11 @@ const Page = () => {
                 <Stack alignItems="center" direction="row" spacing={1}></Stack>
               </Stack>
               <div>
-                <Button
-                  startIcon={
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  }
-                  variant="contained"
-                  onClick={() => {
+                <ButtonCustom
+                  openModal={() => {
                     openModal({}, false);
                   }}
-                  id="modal-button"
-                >
-                  New
-                </Button>
+                />
                 <CustomerModal
                   customer={customer}
                   title={"New"}

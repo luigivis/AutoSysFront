@@ -2,12 +2,17 @@ import PropTypes from "prop-types";
 import NextLink from "next/link";
 import { Box, Typography, Unstable_Grid2 as Grid } from "@mui/material";
 import { Logo } from "src/components/logo";
+import { showAlert } from "src/sections/global/alert";
 
 // TODO: Change subtitle text
 
 export const Layout = (props) => {
   const { children } = props;
   const company = JSON.parse(localStorage.getItem("company"));
+  if (company === null) {
+    showAlert("Could not get company information", "error", "Error");
+    return;
+  }
 
   return (
     <Box

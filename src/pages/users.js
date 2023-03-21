@@ -1,7 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import Head from "next/head";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { UserTable } from "src/sections/user/users-table";
 import { Search } from "src/sections/global/search";
@@ -13,6 +12,7 @@ import { USER } from "../service/endpoints";
 import { FILTER } from "../service/endpoints";
 import { showAlert } from "src/sections/global/alert";
 import { useAuthContext } from "src/contexts/auth-context";
+import { ButtonCustom } from "src/sections/global/ButtonCustom";
 
 const Page = () => {
   const { user } = useAuthContext();
@@ -214,20 +214,11 @@ const Page = () => {
                 <Stack alignItems="center" direction="row" spacing={1}></Stack>
               </Stack>
               <div>
-                <Button
-                  startIcon={
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  }
-                  variant="contained"
-                  onClick={() => {
+                <ButtonCustom
+                  openModal={() => {
                     openModal({}, false);
                   }}
-                  id="modal-button"
-                >
-                  New
-                </Button>
+                />
                 <UserModal
                   data={userBody}
                   title={"New"}

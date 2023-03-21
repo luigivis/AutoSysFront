@@ -18,6 +18,7 @@ import EditIcon from "@heroicons/react/24/solid/PencilIcon";
 import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 
 export const CustomersTable = (props) => {
+  const company = JSON.parse(localStorage.getItem("company"));
   const {
     count = 0,
     items = [],
@@ -57,7 +58,7 @@ export const CustomersTable = (props) => {
                     <TableCell>
                       <Switch
                         defaultChecked={item.clStatus === 1 ? true : false}
-                        color="secondary"
+                        color={company.components.paletteColor.toggle}
                         onChange={() => {
                           props.OnChangeStatus(item);
                         }}

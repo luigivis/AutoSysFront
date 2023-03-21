@@ -15,6 +15,7 @@ export const items = [
   {
     title: "Users",
     path: "/users",
+    microserviceName: "users",
     icon: (
       <SvgIcon fontSize="small">
         <UserIcon />
@@ -25,6 +26,7 @@ export const items = [
   {
     title: "Employees",
     path: "/employees",
+    microserviceName: "employees",
     icon: (
       <SvgIcon fontSize="small">
         <UserPlusIcon />
@@ -35,6 +37,7 @@ export const items = [
   {
     title: "Customers",
     path: "/customers",
+    microserviceName: "client",
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
@@ -44,6 +47,7 @@ export const items = [
   },
   {
     title: "Cars",
+    microserviceName: "car",
     path: "/",
     icon: (
       <SvgIcon fontSize="small">

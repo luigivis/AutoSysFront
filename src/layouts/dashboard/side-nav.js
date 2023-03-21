@@ -17,12 +17,17 @@ import { Logo } from "src/components/logo";
 import { Scrollbar } from "src/components/scrollbar";
 import { items } from "./config";
 import { SideNavItem } from "./side-nav-item";
+import { showAlert } from "src/sections/global/alert";
 
 export const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
   const company = JSON.parse(localStorage.getItem("company"));
+  if (company === null) {
+    showAlert("Could not get company information", "error", "Error");
+    return;
+  }
 
   const content = (
     <Scrollbar
@@ -97,8 +102,8 @@ export const SideNav = (props) => {
           >
             {items.map((item) => {
               const active = item.path ? pathname === item.path : false;
-              var exist = company.components.modulesAcces.find(
-                (access) => access.microserviceName === item.title
+              var exist = company.components.moduleAccess.find(
+                (access) => access.microserviceName === item.microserviceName
               );
               if (exist) {
                 return (
@@ -131,7 +136,7 @@ export const SideNav = (props) => {
         open
         PaperProps={{
           sx: {
-            backgroundColor: `${company.components.palettColor.black}`,
+            backgroundColor: `${company.components.paletteColor.sideNav}`,
             color: "common.white",
             width: 280,
           },
@@ -150,7 +155,7 @@ export const SideNav = (props) => {
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: "neutral.800",
+          backgroundColor: `${company.components.paletteColor.sideNav}`,
           color: "common.white",
           width: 280,
         },

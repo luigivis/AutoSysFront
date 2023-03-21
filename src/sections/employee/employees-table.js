@@ -28,6 +28,7 @@ export const EmployeeTable = (props) => {
     rowsPerPage = 0,
     selected = [],
   } = props;
+  const company = JSON.parse(localStorage.getItem("company"));
 
   return (
     <Card>
@@ -64,7 +65,7 @@ export const EmployeeTable = (props) => {
                       <TableCell>
                         <Switch
                           defaultChecked={item.empStatus === 1 ? true : false}
-                          color="secondary"
+                          color={company.components.paletteColor.toggle}
                           onChange={() => {
                             props.OnChangeStatus(item);
                           }}
