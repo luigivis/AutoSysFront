@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,17 +15,24 @@ import {
   Tabs,
   TextField,
   Typography,
+  Snackbar,
 } from "@mui/material";
 import { useAuth } from "src/hooks/use-auth";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { showAlert } from "src/sections/global/alert";
 
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
   const [method, setMethod] = useState("email");
   const [loading, setLoading] = useState(false);
-  const [company, setCompany] = useState(JSON.parse(localStorage.getItem("userStorage")));
+  const company = JSON.parse(localStorage.getItem("company"));
+  console.log(company);
+
+  if (company.components.systemStatus.code === 3) {
+    router.push("/404");
+  }
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -50,19 +57,21 @@ const Page = () => {
     },
   });
 
-  const handleMethodChange = useCallback((event, value) => {
-    setMethod(value);
+  useEffect(() => {
+    switch (company.components.systemStatus.code) {
+      case 2:
+        showAlert(company.components.systemStatus.message, "warning", "Warning");
+        break;
+      case 3:
+        router.push("/404");
+        break;
+    }
   }, []);
-
-  const handleSkip = useCallback(() => {
-    auth.skip();
-    router.push("/");
-  }, [auth, router]);
 
   return (
     <>
       <Head>
-        <title>Login | Devias Kit</title>
+        <title>Login {company.components.systemName}</title>
       </Head>
       <Box
         sx={{
@@ -125,7 +134,12 @@ const Page = () => {
                     type="password"
                     value={formik.values.password}
                   />
-                  <LoadingButton type="submit" loading={loading} variant="contained">
+                  <LoadingButton
+                    type="submit"
+                    loading={loading}
+                    variant="contained"
+                    sx={{ backgroundColor: `${company.components.paletteColor.button} !important` }}
+                  >
                     <span>Continue</span>
                   </LoadingButton>
                 </Stack>

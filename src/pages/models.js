@@ -2,10 +2,10 @@ import { useCallback, useMemo, useState, useEffect } from "react";
 import Head from "next/head";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
-import { BrandTable } from "src/sections/brand/brands-table";
+import { ModelTable } from "src/sections/model/models-table";
 import { putElements, postElements, getElements, deleteElements } from "src/service/api";
-import ModalBrand from "src/sections/brand/modal-brand";
-import { BRANDS } from "../service/endpoints";
+import ModalModel from "src/sections/model/modal-model";
+import { MODEL } from "../service/endpoints";
 import { FILTER } from "../service/endpoints";
 import { showAlert } from "src/sections/global/alert";
 import { useAuthContext } from "src/contexts/auth-context";
@@ -22,8 +22,9 @@ const Page = () => {
   const [open, setOpen] = useState(false);
   const [isShow, setIsShow] = useState(0);
   const [row, setRow] = useState({
-    brandId: "",
-    brandName: "",
+    modelId: "",
+    modelName: "",
+    modelBrandId: "",
     isNew: false,
   });
   const [count, setCount] = useState(0);
@@ -41,7 +42,7 @@ const Page = () => {
 
   const getData = async (pageRow = 0) => {
     let size = localStorage.getItem("rowsPerPage");
-    var response = await getElements(`${BRANDS.list}?page=${pageRow}&size=${size}`, {
+    var response = await getElements(`${MODEL.list}?page=${pageRow}&size=${size}`, {
       jwt: `${user.id}`,
     });
     if (response.status != 200) {
@@ -61,7 +62,7 @@ const Page = () => {
       setIsShow(0);
       return;
     }
-    var response = await getElements(`${FILTER.list}?search=${value}&location=${"car-brand"}`, {
+    var response = await getElements(`${FILTER.list}?search=${value}&location=${"types"}`, {
       jwt: `${user.id}`,
     });
     if (response.status != 200) {
@@ -80,8 +81,9 @@ const Page = () => {
       setRow((item) => ({
         ...item,
         ...{
-          brandId: obj.brandId,
-          brandName: obj.brandName,
+          modelId: obj.modelId,
+          modelName: obj.modelName,
+          modelBrandId: obj.modelBrandId.brandName,
           isNew: false,
         },
       }));
@@ -91,8 +93,9 @@ const Page = () => {
     setRow((item) => ({
       ...item,
       ...{
-        brandId: "",
-        brandName: "",
+        modelId: "",
+        modelName: "",
+        modelBrandId: "",
         isNew: true,
       },
     }));
@@ -110,13 +113,13 @@ const Page = () => {
 
   const create = async (obj) => {
     var response = await postElements(
-      `${BRANDS.create}`,
+      `${MODEL.create}`,
       {
         "Content-Type": "application/json",
         jwt: `${user.id}`,
       },
       {
-        name: obj.brandName,
+        name: obj.modelName,
       }
     );
     if (response.status != 201) {
@@ -131,13 +134,13 @@ const Page = () => {
 
   const update = async (obj) => {
     var response = await putElements(
-      `${BRANDS.update.replace("{id}", obj.brandId)}`,
+      `${MODEL.update.replace("{id}", obj.modelId)}`,
       {
         "Content-Type": "application/json",
         jwt: `${user.id}`,
       },
       {
-        name: obj.brandName,
+        name: obj.modelName,
       }
     );
     if (response.status != 200) {
@@ -173,7 +176,7 @@ const Page = () => {
       confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        var response = await deleteElements(`${BRANDS.delete.replace("{id}", obj.brandId)}`, {
+        var response = await deleteElements(`${MODEL.delete.replace("{id}", obj.modelId)}`, {
           "Content-Type": "application/json",
           jwt: `${user.id}`,
         });
@@ -197,7 +200,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Brands</title>
+        <title>Models</title>
       </Head>
       <Box
         component="main"
@@ -210,7 +213,7 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Brands</Typography>
+                <Typography variant="h4">Models</Typography>
                 <Stack alignItems="center" direction="row" spacing={1}></Stack>
               </Stack>
               <div>
@@ -219,7 +222,7 @@ const Page = () => {
                     openModal({}, false);
                   }}
                 />
-                <ModalBrand
+                <ModalModel
                   data={row}
                   title={"New"}
                   open={open}
@@ -244,7 +247,7 @@ const Page = () => {
               }}
             />
 
-            <BrandTable
+            <ModelTable
               isSecondary={0}
               count={count}
               items={rows}

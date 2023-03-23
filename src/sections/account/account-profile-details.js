@@ -18,6 +18,7 @@ import { showAlert } from "src/sections/global/alert";
 import { useRouter } from "next/navigation";
 
 export const AccountProfileDetails = () => {
+  const company = JSON.parse(localStorage.getItem("company"));
   const router = useRouter();
   const { user } = useAuthContext();
   const [values, setValues] = useState({
@@ -46,7 +47,6 @@ export const AccountProfileDetails = () => {
       },
       values
     );
-    console.log(response);
     if (response.status != 200) {
       showAlert(response.response.status.description, "error", "Error");
       return;
@@ -115,7 +115,11 @@ export const AccountProfileDetails = () => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button variant="contained" onClick={changePassword}>
+          <Button
+            variant="contained"
+            onClick={changePassword}
+            sx={{ backgroundColor: `${company.components.paletteColor.button} !important` }}
+          >
             Save
           </Button>
         </CardActions>

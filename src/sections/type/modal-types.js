@@ -24,7 +24,7 @@ const style = {
   p: 5,
 };
 
-const ModalBrand = (props) => {
+const ModalType = (props) => {
   const [data, setData] = React.useState(props.data);
   React.useEffect(() => {
     setData(props.data);
@@ -52,7 +52,7 @@ const ModalBrand = (props) => {
           >
             X
           </Button>
-          <CardHeader subheader={props.edit} title="Brand" />
+          <CardHeader subheader={props.edit} title="Type" />
           <CardContent sx={{ pt: 0 }}>
             <Box sx={{ m: -1.5 }}>
               <Grid container spacing={3}>
@@ -61,11 +61,11 @@ const ModalBrand = (props) => {
                     fullWidth
                     label="Name"
                     id="name"
-                    value={data.brandName}
+                    value={data.carTypeName}
                     onChange={(e) =>
                       setData((item) => ({
                         ...item,
-                        ...{ brandName: e.target.value },
+                        ...{ carTypeName: e.target.value },
                       }))
                     }
                     required
@@ -88,4 +88,4 @@ const ModalBrand = (props) => {
   );
 };
 
-export default ModalBrand;
+export default ModalType;
