@@ -1,12 +1,5 @@
 #!/bin/bash
 
-NODE=$(node -v)
-if [ "$NODE" != "v14.20.0" ]; then
-  echo "NODE VERSION DISTINCT v14.20.0" >&2
-  echo "RUN nvm install --v14.20.0"
-  exit 2;
-fi
-
 # shellcheck disable=SC2034
 param=$1
 if [ "$1" = "-h" ]; then
@@ -20,6 +13,14 @@ if [ "$1" = "-h" ]; then
   echo "       No parameter: Production mode"
   exit 0
 fi
+
+NODE=$(node -v)
+if [ "$NODE" != "v14.20.0" ]; then
+  echo "NODE VERSION DISTINCT v14.20.0" >&2
+  echo "RUN nvm install --v14.20.0"
+  exit 2;
+fi
+
 if [ "$1" = "" ]; then
   echo "No parameter: Production mode"
   MODE=PROD
