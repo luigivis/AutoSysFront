@@ -1,5 +1,4 @@
 import { Button, SvgIcon } from "@mui/material";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 
 export const ButtonCustomSend = (props) => {
   const company = JSON.parse(localStorage.getItem("company"));

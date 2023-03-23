@@ -17,7 +17,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@heroicons/react/24/solid/PencilIcon";
 import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 
-export const BrandTable = (props) => {
+export const ModelTable = (props) => {
   const company = JSON.parse(localStorage.getItem("company"));
   const {
     count = 0,
@@ -39,16 +39,18 @@ export const BrandTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell>Model</TableCell>
+                <TableCell>Brand</TableCell>
                 <TableCell>Options</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map((item) => {
                 return (
-                  <TableRow hover key={item.brandId}>
-                    <TableCell>{item.brandId}</TableCell>
-                    <TableCell>{item.brandName}</TableCell>
+                  <TableRow hover key={item.modelId}>
+                    <TableCell>{item.modelId}</TableCell>
+                    <TableCell>{item.modelName}</TableCell>
+                    <TableCell>{item.modelBrandId.brandName}</TableCell>
                     <TableCell>
                       <Stack direction="row" alignItems="center" spacing={0}>
                         <IconButton
@@ -95,7 +97,7 @@ export const BrandTable = (props) => {
   );
 };
 
-BrandTable.propTypes = {
+ModelTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,

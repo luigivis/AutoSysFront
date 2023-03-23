@@ -11,17 +11,6 @@ import { FILTER } from "src/service/endpoints";
 import { Search } from "src/sections/global/search";
 import { showAlert } from "src/sections/global/alert";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "55%",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 5,
-};
-
 const ModalEmployeeTable = (props) => {
   const { user } = useAuthContext();
   const [count, setCount] = useState(0);

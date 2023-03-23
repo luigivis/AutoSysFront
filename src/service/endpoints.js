@@ -43,6 +43,14 @@ export const MODEL = {
   findById: `${BASE_URL}car/model/find/{id}`,
 };
 
+export const TYPE = {
+  list: `${BASE_URL}car/type/list/`,
+  create: `${BASE_URL}car/type/create/`,
+  update: `${BASE_URL}car/type/edit/{id}`,
+  delete: `${BASE_URL}car/type/delete/{id}`,
+  findById: `${BASE_URL}car/type/find/{id}`,
+};
+
 export const FILTER = {
   list: `${BASE_URL}search`,
 };

@@ -67,7 +67,7 @@ export const items = [
     subNav: [
       {
         title: "Models",
-        path: "/companies",
+        path: "/models",
         icon: (
           <SvgIcon fontSize="small">
             <ShoppingBagIcon />
@@ -76,7 +76,7 @@ export const items = [
       },
       {
         title: "Types",
-        path: "/settings",
+        path: "/types",
         icon: (
           <SvgIcon fontSize="small">
             <CogIcon />

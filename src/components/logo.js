@@ -22,6 +22,6 @@ export const Logo = (props) => {
         fill={fillColor}
       />
     </svg>*/
-    <img src={props.img} alt="Logo" height="100%" width="100%" />
+    <img src={props.img} alt="Logo" height="100px" width="100px" />
   );
 };

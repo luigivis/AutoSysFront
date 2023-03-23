@@ -101,7 +101,7 @@ export async function deleteElements(url, headers) {
       if (!response.status) {
         return { status: response.status, response: await response.json() };
       }
-      return await response.json();
+      return { status: response.status, response: await response.json() };
     })
     .catch((error) => {
       console.log(error);
