@@ -28,7 +28,6 @@ const Page = () => {
   const [method, setMethod] = useState("email");
   const [loading, setLoading] = useState(false);
   const company = JSON.parse(localStorage.getItem("company"));
-  console.log(company);
 
   if (company.components.systemStatus.code === 3) {
     router.push("/404");

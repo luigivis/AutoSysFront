@@ -1,78 +1,72 @@
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Head from "next/head";
-import { Box, Container, Stack, Typography } from "@mui/material";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
-import { BrandTable } from "src/sections/brand/brands-table";
-import { putElements, postElements, getElements, deleteElements } from "src/service/api";
-import ModalBrand from "src/sections/brand/modal-brand";
 import { BRANDS } from "../service/endpoints";
-import { FILTER } from "../service/endpoints";
-import { showAlert } from "src/sections/global/alert";
+import { putElements, postElements, getElements, deleteElements } from "src/service/api";
 import { useAuthContext } from "src/contexts/auth-context";
-import { Search } from "src/sections/global/search";
+import TableCustomCatalog from "src/sections/global/table-custom";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@heroicons/react/24/solid/PencilIcon";
+import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 import { ButtonCustom } from "src/sections/global/ButtonCustom";
+import ModalBrand from "src/sections/brand/modal-brand";
+import { showAlert } from "src/sections/global/alert";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 
 const Page = () => {
+  const company = JSON.parse(localStorage.getItem("company"));
   const { user } = useAuthContext();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
+  const [edit, setEdit] = useState("New");
   const [open, setOpen] = useState(false);
-  const [isShow, setIsShow] = useState(0);
   const [row, setRow] = useState({
     brandId: "",
     brandName: "",
     isNew: false,
   });
-  const [count, setCount] = useState(0);
-  const [edit, setEdit] = useState("New");
+  const columns = [
+    { field: "brandId", headerName: "ID", type: "number", width: 100 },
+    { field: "brandName", headerName: "NAME", width: 200 },
+    {
+      field: "options",
+      headerName: "OPTIONS",
+      width: 200,
+      renderCell: (params) => {
+        const handleEditClick = () => {
+          openModal(params.row, true);
+        };
+        const handlDeleteClick = () => {
+          deleteData(params.row);
+        };
+        return (
+          <Stack direction="row" alignItems="center" spacing={0}>
+            <IconButton
+              aria-label="edit"
+              sx={{ color: company.components.paletteColor.button }}
+              onClick={handleEditClick}
+            >
+              {
+                <SvgIcon fontSize="small">
+                  <EditIcon />
+                </SvgIcon>
+              }
+            </IconButton>
+            <IconButton aria-label="delete" color="error" onClick={handlDeleteClick}>
+              {
+                <SvgIcon fontSize="small">
+                  <DeleteIcon />
+                </SvgIcon>
+              }
+            </IconButton>
+          </Stack>
+        );
+      },
+    },
+  ];
 
-  const handlePageChange = useCallback((event, value) => {
-    setPage(value);
-    getData(value);
-  }, []);
-
-  const handleRowsPerPageChange = useCallback((event) => {
-    localStorage.setItem("rowsPerPage", `${event.target.value}`);
-    getData(page);
-  }, []);
-
-  const getData = async (pageRow = 0) => {
-    let size = localStorage.getItem("rowsPerPage");
-    var response = await getElements(`${BRANDS.list}?page=${pageRow}&size=${size}`, {
-      jwt: `${user.id}`,
-    });
-    if (response.status != 200) {
-      showAlert(response.response.status.description, "error", "Error");
-      setIsShow(0);
-      return;
-    }
-    setRows(response.response.body.value);
-    setCount(response.response.body.totalItems);
-    setRowsPerPage(Number(size));
-  };
-
-  const filter = async (value) => {
-    setIsShow(1);
-    if (value == "") {
-      getData(page);
-      setIsShow(0);
-      return;
-    }
-    var response = await getElements(`${FILTER.list}?search=${value}&location=${"car-brand"}`, {
-      jwt: `${user.id}`,
-    });
-    if (response.status != 200) {
-      showAlert(response.response.status.description, "error", "Error");
-      setIsShow(0);
-      return;
-    }
-    setRows(response.response.body);
-    setCount(response.response.body.length);
-    setIsShow(0);
-  };
   const openModal = (obj, isEdit) => {
     setOpen(true);
     if (isEdit) {
@@ -96,6 +90,17 @@ const Page = () => {
         isNew: true,
       },
     }));
+  };
+
+  const getData = async () => {
+    var response = await getElements(`${BRANDS.list}?page=${0}&size=${500}`, {
+      jwt: `${user.id}`,
+    });
+    if (response.status != 200) {
+      showAlert(response.response.status.description, "error", "Error");
+      return;
+    }
+    setRows(response.response.body.value);
   };
 
   const SendData = (obj) => {
@@ -124,7 +129,7 @@ const Page = () => {
       showAlert(response.response.status.description, "error", "Error");
       return;
     }
-    getData(page);
+    getData();
     setOpen(false);
     showAlert("Success", "success", "Success");
   };
@@ -145,20 +150,9 @@ const Page = () => {
       showAlert(response.response.status.description, "error", "Error");
       return;
     }
-    getData(page);
+    getData();
     setOpen(false);
     showAlert("Success", "success", "Success");
-  };
-
-  const changeStatus = async (obj) => {
-    var response = await getElements(`${EMPLOYEES.changeStatus.replace("{id}", obj.empUuid)}`, {
-      "Content-Type": "application/json",
-      jwt: `${user.id}`,
-    });
-    if (response.status != 200) {
-      showAlert(response.response.status.description, "error", "Error");
-      return;
-    }
   };
 
   const deleteData = async (obj) => {
@@ -183,21 +177,20 @@ const Page = () => {
           return;
         }
         MySwal.fire("Deleted!", "Your file has been deleted.", "success", "success");
-        getData(page);
+        getData();
         setOpen(false);
       }
     });
   };
 
   useEffect(() => {
-    localStorage.setItem("rowsPerPage", "5");
-    getData(page);
+    getData();
   }, []);
 
   return (
     <>
       <Head>
-        <title>Brands</title>
+        <title>Customers | Devias Kit</title>
       </Head>
       <Box
         component="main"
@@ -210,8 +203,7 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Brands</Typography>
-                <Stack alignItems="center" direction="row" spacing={1}></Stack>
+                <Typography variant="h4">BRANDS</Typography>
               </Stack>
               <div>
                 <ButtonCustom
@@ -233,35 +225,7 @@ const Page = () => {
                 />
               </div>
             </Stack>
-
-            <Search
-              OnSearch={(res) => {
-                filter(res);
-              }}
-              isShow={isShow}
-              refresh={() => {
-                getData(page);
-              }}
-            />
-
-            <BrandTable
-              isSecondary={0}
-              count={count}
-              items={rows}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              OnEdit={(res) => {
-                openModal(res, true);
-              }}
-              OnChangeStatus={(res) => {
-                changeStatus(res);
-              }}
-              OnDelete={(res) => {
-                deleteData(res);
-              }}
-            />
+            <TableCustomCatalog rows={rows} columns={columns} />
           </Stack>
         </Container>
       </Box>

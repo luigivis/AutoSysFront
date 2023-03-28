@@ -58,7 +58,6 @@ export async function getElements(url, headers) {
 }
 
 export async function postElements(url, headers, body) {
-  console.log(JSON.stringify(body));
   return fetch(url, {
     method: "POST",
     headers: headers,

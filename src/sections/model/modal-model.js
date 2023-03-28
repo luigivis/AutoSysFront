@@ -29,7 +29,7 @@ const style = {
   p: 5,
 };
 
-function ChildModal() {
+const ChildModal = (props) => {
   const { user } = useAuthContext();
   const [open, setOpen] = React.useState(false);
   const [isShow, setIsShow] = React.useState(0);
@@ -76,7 +76,7 @@ function ChildModal() {
 
   return (
     <React.Fragment>
-      <Button onClick={handleOpen}>Open Child Modal</Button>
+      <Button onClick={handleOpen}>Search brand</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -108,19 +108,9 @@ function ChildModal() {
             <CardHeader title="Brands" />
             <CardContent sx={{ pt: 0 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={12}>
-                  <Search
-                    OnSearch={(res) => {
-                      filter(res);
-                    }}
-                    isShow={isShow}
-                    refresh={() => {
-                      getEmployees(page);
-                    }}
-                  />
-                </Grid>
                 <Grid xs={12} md={12}>
                   <BrandTable
+                    isSecondary={1}
                     count={count}
                     items={rows}
                     onPageChange={handlePageChange}
@@ -128,6 +118,7 @@ function ChildModal() {
                     page={page}
                     rowsPerPage={rowsPerPage}
                     OnSee={(res) => {
+                      handleClose();
                       props.OnSee(res);
                     }}
                   />
@@ -139,7 +130,7 @@ function ChildModal() {
       </Modal>
     </React.Fragment>
   );
-}
+};
 
 const ModalModel = (props) => {
   const [data, setData] = React.useState(props.data);
@@ -192,20 +183,27 @@ const ModalModel = (props) => {
                   <TextField
                     fullWidth
                     label="Brands"
-                    id="modelBrandId"
-                    value={data.modelBrandId}
+                    id="modelBrandName"
+                    value={data.modelBrandName}
                     disabled={true}
                     onChange={(e) =>
                       setData((item) => ({
                         ...item,
-                        ...{ modelBrandId: e.target.value },
+                        ...{ modelBrandName: e.target.value },
                       }))
                     }
                     required
                   />
                 </Grid>
                 <Grid xs={12} md={4}>
-                  <ChildModal />
+                  <ChildModal
+                    OnSee={(res) => {
+                      setData((item) => ({
+                        ...item,
+                        ...{ modelBrandId: res.brandId, modelBrandName: res.brandName },
+                      }));
+                    }}
+                  />
                 </Grid>
               </Grid>
             </Box>

@@ -25,6 +25,7 @@ const Page = () => {
     modelId: "",
     modelName: "",
     modelBrandId: "",
+    modelBrandName: "",
     isNew: false,
   });
   const [count, setCount] = useState(0);
@@ -83,7 +84,8 @@ const Page = () => {
         ...{
           modelId: obj.modelId,
           modelName: obj.modelName,
-          modelBrandId: obj.modelBrandId.brandName,
+          modelBrandId: obj.modelBrandId.brandId,
+          modelBrandName: obj.modelBrandId.brandName,
           isNew: false,
         },
       }));
@@ -96,6 +98,7 @@ const Page = () => {
         modelId: "",
         modelName: "",
         modelBrandId: "",
+        modelBrandName: "",
         isNew: true,
       },
     }));
@@ -120,6 +123,7 @@ const Page = () => {
       },
       {
         name: obj.modelName,
+        brand_id: obj.modelBrandId,
       }
     );
     if (response.status != 201) {
@@ -141,6 +145,7 @@ const Page = () => {
       },
       {
         name: obj.modelName,
+        brand_id: obj.modelBrandId,
       }
     );
     if (response.status != 200) {
@@ -151,17 +156,6 @@ const Page = () => {
     getData(page);
     setOpen(false);
     showAlert("Success", "success", "Success");
-  };
-
-  const changeStatus = async (obj) => {
-    var response = await getElements(`${EMPLOYEES.changeStatus.replace("{id}", obj.empUuid)}`, {
-      "Content-Type": "application/json",
-      jwt: `${user.id}`,
-    });
-    if (response.status != 200) {
-      showAlert(response.response.status.description, "error", "Error");
-      return;
-    }
   };
 
   const deleteData = async (obj) => {
@@ -176,7 +170,7 @@ const Page = () => {
       confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        var response = await deleteElements(`${MODEL.delete.replace("{id}", obj.modelId)}`, {
+        var response = await getElements(`${MODEL.delete.replace("{id}", obj.modelId)}`, {
           "Content-Type": "application/json",
           jwt: `${user.id}`,
         });

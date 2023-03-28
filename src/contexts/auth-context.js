@@ -66,7 +66,7 @@ export const AuthProvider = (props) => {
   const initialize = async () => {
     const domain = window.location.host;
     // Prevent from calling twice in development mode with React.StrictMode enabled
-    let company = await getElements(LOGIN.company.replace("{domain}", domain));
+    let company = await getElements(LOGIN.company.replace("{domain}", "optimun.lapsystec.com"));
 
     localStorage.setItem(
       "company",

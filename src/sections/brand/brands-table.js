@@ -9,26 +9,19 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  SvgIcon,
-  Switch,
+  Button,
 } from "@mui/material";
 import { Scrollbar } from "src/components/scrollbar";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@heroicons/react/24/solid/PencilIcon";
-import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 
 export const BrandTable = (props) => {
   const company = JSON.parse(localStorage.getItem("company"));
   const {
     count = 0,
     items = [],
-    onDeselectAll,
     onPageChange = () => {},
     onRowsPerPageChange,
-    onSelectAll,
     page = 0,
     rowsPerPage = 0,
-    selected = [],
   } = props;
 
   return (
@@ -51,28 +44,18 @@ export const BrandTable = (props) => {
                     <TableCell>{item.brandName}</TableCell>
                     <TableCell>
                       <Stack direction="row" alignItems="center" spacing={0}>
-                        <IconButton
-                          aria-label="edit"
-                          sx={{ color: company.components.paletteColor.button }}
-                          onClick={() => props.OnEdit(item)}
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: `${company.components.paletteColor.button} !important`,
+                          }}
+                          onClick={() => {
+                            props.OnSee(item);
+                          }}
+                          id="modal-button"
                         >
-                          {
-                            <SvgIcon fontSize="small">
-                              <EditIcon />
-                            </SvgIcon>
-                          }
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          color="error"
-                          onClick={() => props.OnDelete(item)}
-                        >
-                          {
-                            <SvgIcon fontSize="small">
-                              <DeleteIcon />
-                            </SvgIcon>
-                          }
-                        </IconButton>
+                          Add
+                        </Button>
                       </Stack>
                     </TableCell>
                   </TableRow>

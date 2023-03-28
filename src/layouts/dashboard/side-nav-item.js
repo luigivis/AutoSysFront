@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 
 export const SideNavItem = (props) => {
+  const company = JSON.parse(localStorage.getItem("company"));
   const { active = false, disabled, external, icon, path, title } = props;
   const [idItem, setIdItem] = useState("");
   const [open, setOpen] = useState(false);
@@ -72,7 +73,7 @@ export const SideNavItem = (props) => {
                 justifyContent: "center",
                 mr: 2,
                 ...(active && {
-                  color: "primary.main",
+                  color: `${company.components.paletteColor.highlighting}`,
                 }),
               }}
             >
@@ -224,7 +225,7 @@ export const SideNavItem = (props) => {
                           ...(idItem != item.path
                             ? false
                             : true && {
-                                color: "primary.main",
+                                color: `${company.components.paletteColor.highlighting}`,
                               }),
                         }}
                       >

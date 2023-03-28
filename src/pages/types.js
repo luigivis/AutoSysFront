@@ -1,23 +1,24 @@
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography, SvgIcon } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
-import { TypeTable } from "src/sections/type/types-table";
 import { putElements, postElements, getElements, deleteElements } from "src/service/api";
 import ModalType from "src/sections/type/modal-types";
 import { TYPE } from "../service/endpoints";
-import { FILTER } from "../service/endpoints";
 import { showAlert } from "src/sections/global/alert";
 import { useAuthContext } from "src/contexts/auth-context";
 import { Search } from "src/sections/global/search";
 import { ButtonCustom } from "src/sections/global/ButtonCustom";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import TableCustomCatalog from "src/sections/global/table-custom";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@heroicons/react/24/solid/PencilIcon";
+import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 
 const Page = () => {
+  const company = JSON.parse(localStorage.getItem("company"));
   const { user } = useAuthContext();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [isShow, setIsShow] = useState(0);
@@ -26,22 +27,49 @@ const Page = () => {
     carTypeName: "",
     isNew: false,
   });
-  const [count, setCount] = useState(0);
+  const columns = [
+    { field: "carTypeId", headerName: "ID", type: "number", width: 100 },
+    { field: "carTypeName", headerName: "NAME", width: 200 },
+    {
+      field: "options",
+      headerName: "OPTIONS",
+      width: 200,
+      renderCell: (params) => {
+        const handleEditClick = () => {
+          openModal(params.row, true);
+        };
+        const handlDeleteClick = () => {
+          deleteData(params.row);
+        };
+        return (
+          <Stack direction="row" alignItems="center" spacing={0}>
+            <IconButton
+              aria-label="edit"
+              sx={{ color: company.components.paletteColor.button }}
+              onClick={handleEditClick}
+            >
+              {
+                <SvgIcon fontSize="small">
+                  <EditIcon />
+                </SvgIcon>
+              }
+            </IconButton>
+            <IconButton aria-label="delete" color="error" onClick={handlDeleteClick}>
+              {
+                <SvgIcon fontSize="small">
+                  <DeleteIcon />
+                </SvgIcon>
+              }
+            </IconButton>
+          </Stack>
+        );
+      },
+    },
+  ];
   const [edit, setEdit] = useState("New");
 
-  const handlePageChange = useCallback((event, value) => {
-    setPage(value);
-    getData(value);
-  }, []);
-
-  const handleRowsPerPageChange = useCallback((event) => {
-    localStorage.setItem("rowsPerPage", `${event.target.value}`);
-    getData(page);
-  }, []);
-
   const getData = async (pageRow = 0) => {
-    let size = localStorage.getItem("rowsPerPage");
-    var response = await getElements(`${TYPE.list}?page=${pageRow}&size=${size}`, {
+    var response = await getElements(`${TYPE.list}?page=${pageRow}&size=${500}`, {
       jwt: `${user.id}`,
     });
     if (response.status != 200) {
@@ -50,29 +78,8 @@ const Page = () => {
       return;
     }
     setRows(response.response.body.value);
-    setCount(response.response.body.totalItems);
-    setRowsPerPage(Number(size));
   };
 
-  const filter = async (value) => {
-    setIsShow(1);
-    if (value == "") {
-      getData(page);
-      setIsShow(0);
-      return;
-    }
-    var response = await getElements(`${FILTER.list}?search=${value}&location=${"types"}`, {
-      jwt: `${user.id}`,
-    });
-    if (response.status != 200) {
-      showAlert(response.response.status.description, "error", "Error");
-      setIsShow(0);
-      return;
-    }
-    setRows(response.response.body);
-    setCount(response.response.body.length);
-    setIsShow(0);
-  };
   const openModal = (obj, isEdit) => {
     setOpen(true);
     if (isEdit) {
@@ -124,7 +131,7 @@ const Page = () => {
       showAlert(response.response.status.description, "error", "Error");
       return;
     }
-    getData(page);
+    getData();
     setOpen(false);
     showAlert("Success", "success", "Success");
   };
@@ -145,20 +152,9 @@ const Page = () => {
       showAlert(response.response.status.description, "error", "Error");
       return;
     }
-    getData(page);
+    getData();
     setOpen(false);
     showAlert("Success", "success", "Success");
-  };
-
-  const changeStatus = async (obj) => {
-    var response = await getElements(`${EMPLOYEES.changeStatus.replace("{id}", obj.empUuid)}`, {
-      "Content-Type": "application/json",
-      jwt: `${user.id}`,
-    });
-    if (response.status != 200) {
-      showAlert(response.response.status.description, "error", "Error");
-      return;
-    }
   };
 
   const deleteData = async (obj) => {
@@ -183,15 +179,14 @@ const Page = () => {
           return;
         }
         MySwal.fire("Deleted!", "Your file has been deleted.", "success", "success");
-        getData(page);
+        getData();
         setOpen(false);
       }
     });
   };
 
   useEffect(() => {
-    localStorage.setItem("rowsPerPage", "5");
-    getData(page);
+    getData();
   }, []);
 
   return (
@@ -233,35 +228,7 @@ const Page = () => {
                 />
               </div>
             </Stack>
-
-            <Search
-              OnSearch={(res) => {
-                filter(res);
-              }}
-              isShow={isShow}
-              refresh={() => {
-                getData(page);
-              }}
-            />
-
-            <TypeTable
-              isSecondary={0}
-              count={count}
-              items={rows}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              OnEdit={(res) => {
-                openModal(res, true);
-              }}
-              OnChangeStatus={(res) => {
-                changeStatus(res);
-              }}
-              OnDelete={(res) => {
-                deleteData(res);
-              }}
-            />
+            <TableCustomCatalog rows={rows} columns={columns} />
           </Stack>
         </Container>
       </Box>
