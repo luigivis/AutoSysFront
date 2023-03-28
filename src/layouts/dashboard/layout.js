@@ -4,6 +4,7 @@ import { withAuthGuard } from "src/hocs/with-auth-guard";
 import { SideNav } from "./side-nav";
 import { TopNav } from "./top-nav";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -24,9 +25,19 @@ const LayoutContainer = styled("div")({
 });
 
 export const Layout = withAuthGuard((props) => {
+  const router = useRouter();
   const { children } = props;
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(true);
+  const company = JSON.parse(localStorage.getItem("company"));
+  if (company === null) {
+    showAlert("Could not get company information", "error", "Error");
+    return;
+  } else {
+    if (company.components.systemStatus.code === 3) {
+      router.push("/404");
+    }
+  }
 
   useEffect(() => {
     if (openNav) {
