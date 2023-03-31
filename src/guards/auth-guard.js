@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { useAuthContext } from "src/contexts/auth-context";
+import { validToken } from "src/service/api";
+import { LOGIN } from "src/service/endpoints";
 
 export const AuthGuard = (props) => {
   const { children } = props;
@@ -14,7 +16,22 @@ export const AuthGuard = (props) => {
   // This flow allows you to manually redirect the user after sign-out, otherwise this will be
   // triggered and will automatically redirect to sign-in page.
 
+  const ActivedToken = async () => {
+    const token = JSON.parse(localStorage.getItem("userStorage"));
+    const response = await validToken(`${LOGIN.validToken}`, {
+      jwt: token.id,
+    });
+    if (response.status != 200) {
+      localStorage.removeItem("userStorage");
+      localStorage.removeItem("rowsPerPage");
+      localStorage.setItem("authenticated", "false");
+      router.push("/auth/login");
+    }
+  };
+
   useEffect(() => {
+    ActivedToken();
+
     if (!router.isReady) {
       return;
     }

@@ -41,6 +41,25 @@ export async function logout(url, headers) {
     });
 }
 
+export async function validToken(url, headers) {
+  return fetch(url, {
+    method: "GET",
+    headers: headers,
+  })
+    .then(async (response) => {
+      if (!response.status) {
+        return { status: response.status, response: await response.json() };
+      }
+      return {
+        status: response.status,
+        response: await response.json(),
+      };
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 export async function getElements(url, headers) {
   return fetch(url, {
     method: "GET",

@@ -4,6 +4,7 @@ export const LOGIN = {
   logout: `${BASE_URL}security/logout`,
   changePassword: `${BASE_URL}security/changePassword`,
   company: `${BASE_URL}info/list/{domain}`,
+  validToken: `${BASE_URL}security/tokenValid`,
 };
 
 export const CLIENTS = {
