@@ -24,7 +24,7 @@ export const EMPLOYEES = {
 export const USER = {
   list: `${BASE_URL}users/list/`,
   create: `${BASE_URL}users/create/`,
-  update: `${BASE_URL}users/change/role/{id}/{idrol}`,
+  update: `${BASE_URL}users/edit/{id}`,
   changeStatus: `${BASE_URL}users/change/status/{id}`,
 };
 

@@ -161,12 +161,16 @@ const Page = () => {
         break;
     }
     var response = await putElements(
-      `${USER.update.replace("{id}", obj.usId).replace("{idrol}", obj.usRoleId)}`,
+      `${USER.update.replace("{id}", obj.usId)}`,
       {
         "Content-Type": "application/json",
         jwt: `${user.id}`,
       },
-      {}
+      {
+        username: obj.usUsername,
+        password: obj.password,
+        roleCatalog: obj.usRoleId,
+      }
     );
     if (response.status != 200) {
       setOpen(false);

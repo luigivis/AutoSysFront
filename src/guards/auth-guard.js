@@ -18,14 +18,18 @@ export const AuthGuard = (props) => {
 
   const ActivedToken = async () => {
     const token = JSON.parse(localStorage.getItem("userStorage"));
-    const response = await validToken(`${LOGIN.validToken}`, {
-      jwt: token.id,
-    });
-    if (response.status != 200) {
-      localStorage.removeItem("userStorage");
-      localStorage.removeItem("rowsPerPage");
-      localStorage.setItem("authenticated", "false");
-      router.push("/auth/login");
+    console.log(token);
+
+    if (token != null) {
+      const response = await validToken(`${LOGIN.validToken}`, {
+        jwt: token.id,
+      });
+      if (response.status != 200) {
+        localStorage.removeItem("userStorage");
+        localStorage.removeItem("rowsPerPage");
+        localStorage.setItem("authenticated", "false");
+        router.push("/auth/login");
+      }
     }
   };
 
