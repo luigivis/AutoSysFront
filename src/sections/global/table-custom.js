@@ -3,13 +3,13 @@ import { DataGrid } from "@mui/x-data-grid";
 
 export default function TableCustomCatalog({ rows, columns }) {
   rows = rows.map((row, index) => {
-    return { ...row, id: index };
+    return { ...row, id: index, modelName: row.carModelId == null ? "" : row.carModelId.modelName };
   });
   return (
     <div style={{ height: "650px", width: "100%" }}>
       <DataGrid
-        rows={rows}
         columns={columns}
+        rows={rows}
         sx={{
           border: 1,
           borderColor: "divider",

@@ -239,6 +239,7 @@ const Page = () => {
               }}
             />
             <CustomersTable
+              isSecondary={0}
               count={count}
               items={customers}
               onPageChange={handlePageChange}

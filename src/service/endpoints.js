@@ -55,3 +55,11 @@ export const TYPE = {
 export const FILTER = {
   list: `${BASE_URL}search`,
 };
+
+export const CARS = {
+  list: `${BASE_URL}car/list/`,
+  create: `${BASE_URL}car/create/`,
+  update: `${BASE_URL}car/edit/{id}`,
+  changeStatus: `${BASE_URL}car/change/status/{id}`,
+  findById: `${BASE_URL}car/find/client/{id}`,
+};

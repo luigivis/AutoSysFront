@@ -7,6 +7,7 @@ import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
 import UsersIcon from "@heroicons/react/24/solid/IdentificationIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import Cart from "@heroicons/react/24/solid/KeyIcon";
+import Catalog from "@heroicons/react/24/solid/ListBulletIcon";
 import { SvgIcon } from "@mui/material";
 import OpenIcon from "@heroicons/react/24/solid/ChevronRightIcon";
 import CloseIcon from "@heroicons/react/24/solid/ChevronDownIcon";
@@ -46,12 +47,12 @@ export const items = [
     subNav: null,
   },
   {
-    title: "Cars",
+    title: "Catalogs",
     microserviceName: "car",
     path: "/",
     icon: (
       <SvgIcon fontSize="small">
-        <Cart />
+        <Catalog />
       </SvgIcon>
     ),
     iconClosed: (
@@ -65,6 +66,15 @@ export const items = [
       </SvgIcon>
     ),
     subNav: [
+      {
+        title: "Cars",
+        path: "/cars",
+        icon: (
+          <SvgIcon fontSize="small">
+            <Cart />
+          </SvgIcon>
+        ),
+      },
       {
         title: "Models",
         path: "/models",

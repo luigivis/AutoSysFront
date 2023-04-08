@@ -18,8 +18,6 @@ export const AuthGuard = (props) => {
 
   const ActivedToken = async () => {
     const token = JSON.parse(localStorage.getItem("userStorage"));
-    console.log(token);
-
     if (token != null) {
       const response = await validToken(`${LOGIN.validToken}`, {
         jwt: token.id,

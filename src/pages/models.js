@@ -3,7 +3,7 @@ import Head from "next/head";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { ModelTable } from "src/sections/model/models-table";
-import { putElements, postElements, getElements, deleteElements } from "src/service/api";
+import { putElements, postElements, getElements } from "src/service/api";
 import ModalModel from "src/sections/model/modal-model";
 import { MODEL } from "../service/endpoints";
 import { FILTER } from "../service/endpoints";
