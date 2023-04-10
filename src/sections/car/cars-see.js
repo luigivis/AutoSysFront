@@ -23,7 +23,7 @@ import EditIcon from "@heroicons/react/24/solid/PencilIcon";
 import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 const columns = [
   { field: "carId", headerName: "ID", type: "number", width: 100 },
-  { field: "modelName", headerName: "Model", width: 200 },
+  { field: "modelNameSee", headerName: "Model", width: 200 },
   { field: "carNumber", headerName: "Car Number", width: 200 },
   { field: "carPassengerQuantity", headerName: "Passenger", width: 200 },
   { field: "carCylinders", headerName: "Cylinders", width: 200 },
@@ -39,6 +39,7 @@ export const CarSee = () => {
     var response = await getElements(`${CARS.findById.replace("{id}", id)}`, {
       jwt: `${user.id}`,
     });
+    if (response.status == 404) return;
     if (response.status != 200) {
       showAlert(response.response.status.description, "error", "Error");
       return;

@@ -28,7 +28,7 @@ export const Layout = withAuthGuard((props) => {
   const router = useRouter();
   const { children } = props;
   const pathname = usePathname();
-  const [openNav, setOpenNav] = useState(true);
+  const [openNav, setOpenNav] = useState(false);
   const company = JSON.parse(localStorage.getItem("company"));
   if (company === null) {
     showAlert("Could not get company information", "error", "Error");

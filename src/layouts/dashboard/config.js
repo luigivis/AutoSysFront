@@ -36,7 +36,7 @@ export const items = [
     subNav: null,
   },
   {
-    title: "Customers",
+    title: "Clients",
     path: "/customers",
     microserviceName: "client",
     icon: (
@@ -47,7 +47,7 @@ export const items = [
     subNav: null,
   },
   {
-    title: "Catalogs",
+    title: "Cars",
     microserviceName: "car",
     path: "/",
     icon: (

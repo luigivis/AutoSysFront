@@ -111,20 +111,7 @@ const ModalEmployeeTable = (props) => {
                   }}
                 />
               </Grid>
-              <Grid xs={12} md={12}>
-                <EmployeeTable
-                  isSecondary={1}
-                  count={count}
-                  items={employees}
-                  onPageChange={handlePageChange}
-                  onRowsPerPageChange={handleRowsPerPageChange}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  OnSee={(res) => {
-                    props.OnSee(res);
-                  }}
-                />
-              </Grid>
+              <Grid xs={12} md={12}></Grid>
             </Grid>
           </CardContent>
         </Card>

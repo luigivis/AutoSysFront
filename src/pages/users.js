@@ -8,8 +8,7 @@ import { getElements } from "src/service/api";
 import { postElements } from "src/service/api";
 import { putElements } from "src/service/api";
 import UserModal from "src/sections/user/users-modal";
-import { USER } from "../service/endpoints";
-import { FILTER } from "../service/endpoints";
+import { USER, STORE, FILTER } from "../service/endpoints";
 import { showAlert } from "src/sections/global/alert";
 import { useAuthContext } from "src/contexts/auth-context";
 import { ButtonCustom } from "src/sections/global/ButtonCustom";
@@ -21,12 +20,14 @@ const Page = () => {
   const [users, setUsers] = useState([]);
   const [open, setOpen] = useState(false);
   const [isShow, setIsShow] = useState(0);
+  const [store, setStore] = useState([]);
   const [userBody, setUserBody] = useState({
     usId: "",
     usUsername: "",
     password: "",
     empName: "",
     usRoleId: 1,
+    storeId: 0,
     usCreatedAt: "",
     employeeUuid: "",
     isNew: true,
@@ -57,6 +58,19 @@ const Page = () => {
     setUsers(response.response.body.value);
     setCount(response.response.body.totalItems);
     setRowsPerPage(Number(size));
+  };
+
+  const getStore = async (pageRow = 0) => {
+    var response = await getElements(`${STORE.list}?page=${pageRow}&size=${1000}`, {
+      jwt: `${user.id}`,
+    });
+    if (response.status != 200) {
+      showAlert(response.response.status.description, "error", "Error");
+      return;
+    }
+    setStore(
+      response.response.body.value.map((item) => ({ label: item.strName, value: item.strId }))
+    );
   };
 
   const filter = async (value) => {
@@ -93,6 +107,11 @@ const Page = () => {
           usRoleId: obj.usRoleId,
           usCreatedAt: obj.usCreatedAt,
           employeeUuid: "",
+          storeId: obj.usStoreid == null ? 0 : obj.usStoreid.strId,
+          store: store.find((item) => {
+            if (obj.usStoreid == null) return 0;
+            else if (item.value === obj.usStoreid.strId) return item;
+          }),
           isNew: false,
         },
       }));
@@ -107,6 +126,7 @@ const Page = () => {
         password: "",
         empName: "",
         usRoleId: 1,
+        storeId: 0,
         usCreatedAt: "",
         employeeUuid: "",
         isNew: true,
@@ -136,6 +156,7 @@ const Page = () => {
         password: obj.password,
         roleId: obj.usRoleId,
         employeeUuid: obj.employeeUuid,
+        storeId: obj.storeId,
       }
     );
     if (response.status != 201) {
@@ -170,6 +191,7 @@ const Page = () => {
         username: obj.usUsername,
         password: obj.password,
         roleCatalog: obj.usRoleId,
+        storeId: obj.storeId,
       }
     );
     if (response.status != 200) {
@@ -196,6 +218,7 @@ const Page = () => {
   useEffect(() => {
     localStorage.setItem("rowsPerPage", "5");
     getData(page);
+    getStore(page);
   }, []);
 
   return (
@@ -228,6 +251,7 @@ const Page = () => {
                   title={"New"}
                   open={open}
                   edit={edit}
+                  store={store}
                   OnClose={() => {
                     setOpen(false);
                   }}

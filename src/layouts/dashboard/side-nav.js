@@ -118,6 +118,9 @@ export const SideNav = (props) => {
                     subNav={item.subNav}
                     iconOpened={item.iconOpened}
                     iconClosed={item.iconClosed}
+                    rout={() => {
+                      onClose();
+                    }}
                   />
                 );
               }

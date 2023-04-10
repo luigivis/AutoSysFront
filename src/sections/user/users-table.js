@@ -43,6 +43,7 @@ export const UserTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell>Store</TableCell>
                 <TableCell>User Name</TableCell>
                 <TableCell>Employee</TableCell>
                 <TableCell>Rol</TableCell>
@@ -69,6 +70,7 @@ export const UserTable = (props) => {
                 // const createdAt = format(customer.clCreatedAt, "dd/MM/yyyy");
                 return (
                   <TableRow hover key={item.usId} selected={isSelected}>
+                    <TableCell>{item.usStoreid == null ? "ND" : item.usStoreid.strName}</TableCell>
                     <TableCell>{item.usUsername}</TableCell>
                     <TableCell>{item.usEmployeeUuid.empName}</TableCell>
                     <TableCell>{rol}</TableCell>

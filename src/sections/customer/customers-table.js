@@ -16,6 +16,7 @@ import {
 import { Scrollbar } from "src/components/scrollbar";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@heroicons/react/24/solid/PencilIcon";
+import SeeIcon from "@heroicons/react/24/solid/EyeIcon";
 
 export const CustomersTable = (props) => {
   const company = JSON.parse(localStorage.getItem("company"));
@@ -84,17 +85,29 @@ export const CustomersTable = (props) => {
                     <TableCell>
                       <Stack direction="row" alignItems="center" spacing={0}>
                         {props.isSecondary == 0 ? (
-                          <IconButton
-                            aria-label="delete"
-                            sx={{ color: company.components.paletteColor.button }}
-                            onClick={() => props.OnEdit(item)}
-                          >
-                            {
-                              <SvgIcon fontSize="small">
-                                <EditIcon />
-                              </SvgIcon>
-                            }
-                          </IconButton>
+                          <>
+                            <IconButton
+                              aria-label="delete"
+                              sx={{ color: company.components.paletteColor.button }}
+                              onClick={() => props.OnEdit(item)}
+                            >
+                              {
+                                <SvgIcon fontSize="small">
+                                  <EditIcon />
+                                </SvgIcon>
+                              }
+                            </IconButton>
+                            <IconButton
+                              sx={{ color: company.components.paletteColor.button }}
+                              onClick={() => props.OnSee(item)}
+                            >
+                              {
+                                <SvgIcon fontSize="small">
+                                  <SeeIcon />
+                                </SvgIcon>
+                              }
+                            </IconButton>
+                          </>
                         ) : null}
 
                         {props.isSecondary == 1 ? (

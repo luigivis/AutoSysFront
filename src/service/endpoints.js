@@ -61,5 +61,13 @@ export const CARS = {
   create: `${BASE_URL}car/create/`,
   update: `${BASE_URL}car/edit/{id}`,
   changeStatus: `${BASE_URL}car/change/status/{id}`,
+  findByCarId: `${BASE_URL}car/find/{id}`,
   findById: `${BASE_URL}car/find/client/{id}`,
+};
+
+export const STORE = {
+  list: `${BASE_URL}store/list/`,
+  create: `${BASE_URL}store/create/`,
+  update: `${BASE_URL}store/edit/{id}`,
+  changeStatus: `${BASE_URL}store/change/status/{id}`,
 };

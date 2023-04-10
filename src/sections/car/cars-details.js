@@ -16,11 +16,20 @@ import {
 import { useAuthContext } from "src/contexts/auth-context";
 import { showAlert } from "src/sections/global/alert";
 import { useRouter } from "next/navigation";
-import { MODEL, TYPE, CARS, CLIENTS, FILTER } from "../../service/endpoints";
-import { postElements, getElements } from "src/service/api";
+import { MODEL, TYPE, CARS, CLIENTS, FILTER, LOGIN } from "../../service/endpoints";
+import { postElements, getElements, putElements } from "src/service/api";
 import { CustomersTable } from "src/sections/customer/customers-table";
 import { Fragment } from "react";
 import { Search } from "src/sections/global/search";
+import { useRouter as useRouterQuery } from "next/router";
+const fuel = [
+  { value: "GASOLINE", label: "GASOLINE" },
+  { value: "DIESEL", label: "DIESEL" },
+  { value: "BIO-DIESEL", label: "BIO-DIESEL" },
+  { value: "Ethanol", label: "Ethanol" },
+  { value: "HYBRID", label: "HYBRID" },
+  { value: "ELECT", label: "ELECT" },
+];
 
 const ChildModal = (props) => {
   const { user } = useAuthContext();
@@ -98,27 +107,27 @@ const ChildModal = (props) => {
       >
         <Box
           sx={{
-            height: "70%",
-            overflow: "auto",
-            marginTop: "5%",
-            marginLeft: "15%",
-            marginRight: "15%",
-            borderRadius: "1px",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "50%",
+            bgcolor: "background.paper",
             boxShadow: 24,
+            p: 2,
+            maxHeight: "80vh",
+            overflow: "auto",
           }}
         >
           <Card>
-            <Button
-              sx={{
-                position: "absolute",
-                right: "15%",
-                margin: "16px",
-              }}
-              onClick={handleClose}
-            >
-              X
-            </Button>
-            <CardHeader title="Client" />
+            <Grid container>
+              <Grid xs={6} md={6}>
+                <CardHeader title="Client" />
+              </Grid>
+              <Grid xs={6} md={6} sx={{ textAlign: "end" }}>
+                <Button onClick={handleClose}>X</Button>
+              </Grid>
+            </Grid>
             <CardContent sx={{ pt: 0 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
@@ -159,6 +168,8 @@ const ChildModal = (props) => {
 export const CarDetails = () => {
   const company = JSON.parse(localStorage.getItem("company"));
   const router = useRouter();
+  const routerQuery = useRouterQuery();
+  const { id } = routerQuery.query;
   const { user } = useAuthContext();
   const [values, setValues] = useState({
     car_number: "",
@@ -168,10 +179,14 @@ export const CarDetails = () => {
     car_year: "",
     car_color: "",
     car_motor: "",
-    car_fuel: "GASOLINE",
+    car_fuel: "",
     car_cylinders: "",
     car_cl_uuid: "",
     car_cl_name: "",
+    car_mileage: "",
+    tire_mileage: "",
+    model: "",
+    type: "",
   });
   const [model, setModel] = useState([]);
   const [type, setType] = useState([]);
@@ -194,20 +209,38 @@ export const CarDetails = () => {
     values.car_model_id = Number(values.car_model_id);
     values.car_type_id = Number(values.car_type_id);
     values.car_motor = Number(values.car_motor);
-
-    var response = await postElements(
-      `${CARS.create}`,
-      {
-        "Content-Type": "application/json",
-        jwt: `${user.id}`,
-      },
-      values
-    );
-    if (response.status != 201) {
-      showAlert(response.response.status.description, "error", "Error");
-      return;
+    if (id == undefined) {
+      var response = await postElements(
+        `${CARS.create}`,
+        {
+          "Content-Type": "application/json",
+          jwt: `${user.id}`,
+        },
+        values
+      );
+      if (response.status != 201) {
+        showAlert(response.response.status.description, "error", "Error");
+        return;
+      }
+    } else {
+      var body = values;
+      delete body.car_cl_name;
+      delete body.model;
+      delete body.type;
+      var response = await putElements(
+        `${CARS.update.replace("{id}", id)}`,
+        {
+          "Content-Type": "application/json",
+          jwt: `${user.id}`,
+        },
+        values
+      );
+      if (response.status != 200) {
+        showAlert(response.response.status.description, "error", "Error");
+        return;
+      }
     }
-    showAlert("Car created successfully", "success", "Success");
+    showAlert("Successfully", "success", "Success");
     router.push("/cars");
   };
 
@@ -240,9 +273,46 @@ export const CarDetails = () => {
     );
   };
 
+  const getCar = async (id) => {
+    var response = await getElements(`${CARS.findByCarId.replace("{id}", id)}`, {
+      jwt: `${user.id}`,
+    });
+    if (response.status != 200) {
+      showAlert(response.response.status.description, "error", "Error");
+      return;
+    }
+    setValues((prevState) => ({
+      ...prevState,
+      car_number: response.response.body.carNumber,
+      car_passenger_quantity: response.response.body.carPassengerQuantity,
+      car_model_id: response.response.body.carModelId.modelId,
+      car_type_id: response.response.body.carTypeId.carTypeId,
+      car_year: response.response.body.carYear,
+      car_color: response.response.body.carColor,
+      car_motor: response.response.body.carMotor,
+      car_fuel: response.response.body.carFuel.toUpperCase(),
+      car_cylinders: response.response.body.carCylinders,
+      car_cl_uuid: response.response.body.carClUuid.clUuid,
+      car_cl_name: response.response.body.carClUuid.clName,
+      car_mileage: response.response.body.carMileage,
+      tire_mileage: response.response.body.carTireMileage,
+      model: {
+        label: response.response.body.carModelId.modelName,
+        value: response.response.body.carModelId.modelId,
+      },
+      type: {
+        label: response.response.body.carTypeId.carTypeName,
+        value: response.response.body.carTypeId.carTypeId,
+      },
+    }));
+  };
+
   useEffect(() => {
     getModel();
     getType();
+    if (id != undefined) {
+      getCar(id);
+    }
   }, []);
 
   const filterOptions = (options, { inputValue }) =>
@@ -255,6 +325,7 @@ export const CarDetails = () => {
     setValues((prevState) => ({
       ...prevState,
       car_model_id: value.value,
+      model: { label: value.label, value: value.value },
     }));
   };
 
@@ -265,6 +336,7 @@ export const CarDetails = () => {
     setValues((prevState) => ({
       ...prevState,
       car_type_id: value.value,
+      type: { label: value.label, value: value.value },
     }));
   };
 
@@ -282,6 +354,7 @@ export const CarDetails = () => {
                     label="Client"
                     name="car_cl_name"
                     onChange={handleChange}
+                    disabled={true}
                     required
                     value={values.car_cl_name}
                   />
@@ -317,25 +390,49 @@ export const CarDetails = () => {
                     value={values.car_passenger_quantity}
                   />
                 </Grid>
-                <Grid xs={6} md={6}>
-                  <Autocomplete
-                    isOptionEqualToValue={(option, value) => option.value === value.value}
-                    options={model}
-                    filterOptions={filterOptions}
-                    onChange={handleSelectModel}
-                    renderInput={(params) => <TextField {...params} label="Select Model" />}
-                  />
-                </Grid>
-                <Grid xs={6} md={6}>
-                  <Autocomplete
-                    isOptionEqualToValue={(option, value) => option.value === value.value}
-                    options={type}
-                    getOptionLabel={(option) => option.label}
-                    filterOptions={filterOptions}
-                    onChange={handleSelectType}
-                    renderInput={(params) => <TextField {...params} label="Select Type" />}
-                  />
-                </Grid>
+                {id == undefined ? (
+                  <>
+                    <Grid xs={6} md={6}>
+                      <Autocomplete
+                        options={model}
+                        filterOptions={filterOptions}
+                        onChange={handleSelectModel}
+                        renderInput={(params) => <TextField {...params} label="Select Model" />}
+                      />
+                    </Grid>
+                    <Grid xs={6} md={6}>
+                      <Autocomplete
+                        options={type}
+                        getOptionLabel={(option) => option.label}
+                        filterOptions={filterOptions}
+                        onChange={handleSelectType}
+                        renderInput={(params) => <TextField {...params} label="Select Type" />}
+                      />
+                    </Grid>
+                  </>
+                ) : (
+                  <>
+                    <Grid xs={6} md={6}>
+                      <Autocomplete
+                        options={model}
+                        filterOptions={filterOptions}
+                        onChange={handleSelectModel}
+                        value={values.model}
+                        renderInput={(params) => <TextField {...params} label="Select Model" />}
+                      />
+                    </Grid>
+                    <Grid xs={6} md={6}>
+                      <Autocomplete
+                        options={type}
+                        filterOptions={filterOptions}
+                        onChange={handleSelectType}
+                        value={values.type}
+                        renderInput={(params) => <TextField {...params} label="Select Type" />}
+                      />
+                    </Grid>
+                  </>
+                )}
+
                 <Grid xs={3} md={3}>
                   <TextField
                     fullWidth
@@ -372,22 +469,50 @@ export const CarDetails = () => {
                   <TextField
                     fullWidth
                     label="Motor"
-                    type={"number"}
                     name="car_motor"
                     onChange={handleChange}
                     required
                     value={values.car_motor}
                   />
                 </Grid>
-                <Grid xs={3} md={3}>
+
+                <Grid xs={4} md={4}>
+                  <TextField
+                    fullWidth
+                    label="Car Mileage"
+                    name="car_mileage"
+                    onChange={handleChange}
+                    required
+                    value={values.car_mileage}
+                  />
+                </Grid>
+                <Grid xs={4} md={4}>
+                  <TextField
+                    fullWidth
+                    label="Tire Mileage"
+                    name="tire_mileage"
+                    onChange={handleChange}
+                    required
+                    value={values.tire_mileage}
+                  />
+                </Grid>
+                <Grid xs={4} md={4}>
                   <TextField
                     fullWidth
                     label="Fuel"
                     name="car_fuel"
-                    onChange={handleChange}
                     required
+                    select
+                    SelectProps={{ native: true }}
                     value={values.car_fuel}
-                  />
+                    onChange={handleChange}
+                  >
+                    {fuel.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
                 </Grid>
               </Grid>
             </Box>

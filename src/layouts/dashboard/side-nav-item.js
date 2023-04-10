@@ -24,6 +24,7 @@ export const SideNavItem = (props) => {
   };
 
   const handleClickSub = (id) => {
+    props.rout();
     setIdItem(id);
   };
 
@@ -60,6 +61,9 @@ export const SideNavItem = (props) => {
             "&:hover": {
               backgroundColor: "rgba(255, 255, 255, 0.04)",
             },
+          }}
+          onClick={() => {
+            props.rout();
           }}
           {...linkProps}
         >

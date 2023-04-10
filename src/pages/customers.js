@@ -12,9 +12,11 @@ import { showAlert } from "src/sections/global/alert";
 import { useAuthContext } from "src/contexts/auth-context";
 import { FILTER } from "../service/endpoints";
 import { ButtonCustom } from "src/sections/global/ButtonCustom";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { user } = useAuthContext();
+  const router = useRouter();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [customers, setCustomers] = useState([]);
@@ -193,7 +195,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Customers</title>
+        <title>Clients</title>
       </Head>
       <Box
         component="main"
@@ -206,7 +208,7 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Customers</Typography>
+                <Typography variant="h4">Clients</Typography>
                 <Stack alignItems="center" direction="row" spacing={1}></Stack>
               </Stack>
               <div>
@@ -251,6 +253,12 @@ const Page = () => {
               }}
               OnChangeStatus={(res) => {
                 changeStatus(res);
+              }}
+              OnSee={(res) => {
+                router.push({
+                  pathname: "/car/see-car",
+                  query: { id: res.clUuid },
+                });
               }}
             />
           </Stack>

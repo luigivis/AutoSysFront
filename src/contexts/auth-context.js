@@ -66,8 +66,8 @@ export const AuthProvider = (props) => {
   const initialize = async () => {
     const domain = window.location.host;
     // Prevent from calling twice in development mode with React.StrictMode enabled
-    //let company = await getElements(LOGIN.company.replace("{domain}", "optimun.lapsystec.com"));
-    let company = await getElements(LOGIN.company.replace("{domain}", `${domain}`));
+    let company = await getElements(LOGIN.company.replace("{domain}", "optimun.lapsystec.com"));
+    //let company = await getElements(LOGIN.company.replace("{domain}", `${domain}`));
 
     localStorage.setItem(
       "company",
@@ -129,6 +129,7 @@ export const AuthProvider = (props) => {
       avatar: "/assets/avatars/avatar-anika-visser.png",
       name: `${response.response.status.description}`,
       email: "anika.visser@devias.io",
+      storeName: `${response.response.body.storeName}`,
     };
     localStorage.setItem("userStorage", JSON.stringify(user));
 

@@ -164,7 +164,10 @@ const Page = () => {
               page={page}
               rowsPerPage={rowsPerPage}
               OnEdit={(res) => {
-                openModal(res, true);
+                router.push({
+                  pathname: "/car/new-car",
+                  query: { id: res.carId },
+                });
               }}
               OnChangeStatus={(res) => {
                 changeStatus(res);

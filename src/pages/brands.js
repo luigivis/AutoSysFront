@@ -190,7 +190,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Customers | Devias Kit</title>
+        <title>BRANDS | Devias Kit</title>
       </Head>
       <Box
         component="main"
