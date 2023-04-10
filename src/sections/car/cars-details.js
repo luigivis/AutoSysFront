@@ -25,8 +25,8 @@ import { useRouter as useRouterQuery } from "next/router";
 const fuel = [
   { value: "GASOLINE", label: "GASOLINE" },
   { value: "DIESEL", label: "DIESEL" },
-  { value: "BIO-DIESEL", label: "BIO-DIESEL" },
-  { value: "Ethanol", label: "Ethanol" },
+  { value: "BIODIESEL", label: "BIODIESEL" },
+  { value: "ETHANOL", label: "ETHANOL" },
   { value: "HYBRID", label: "HYBRID" },
   { value: "ELECT", label: "ELECT" },
 ];
