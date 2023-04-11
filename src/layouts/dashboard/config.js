@@ -47,6 +47,17 @@ export const items = [
     subNav: null,
   },
   {
+    title: "Stores",
+    path: "/stores",
+    microserviceName: "client",
+    icon: (
+      <SvgIcon fontSize="small">
+        <UsersIcon />
+      </SvgIcon>
+    ),
+    subNav: null,
+  },
+  {
     title: "Cars",
     microserviceName: "car",
     path: "/",
