@@ -70,4 +70,5 @@ export const STORE = {
   create: `${BASE_URL}store/create/`,
   update: `${BASE_URL}store/edit/{id}`,
   changeStatus: `${BASE_URL}store/change/status/{id}`,
+  confirm: `${BASE_URL}store/confirm/email/`,
 };

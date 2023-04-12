@@ -24,7 +24,7 @@ const style = {
   p: 5,
 };
 
-const ModalStore = (props) => {
+const ModalConfirmStore = (props) => {
   const [data, setData] = React.useState(props.data);
   React.useEffect(() => {
     setData(props.data);
@@ -52,60 +52,16 @@ const ModalStore = (props) => {
           >
             X
           </Button>
-          <CardHeader subheader={props.edit} title="Store" />
+          <CardHeader title="Store" />
           <CardContent sx={{ pt: 0 }}>
             <Box sx={{ m: -1.5 }}>
               <Grid container spacing={3}>
                 <Grid xs={6} md={6}>
                   <TextField
                     fullWidth
-                    label="Name"
-                    id="name"
-                    value={data.name}
-                    onChange={(e) =>
-                      setData((item) => ({
-                        ...item,
-                        ...{ name: e.target.value },
-                      }))
-                    }
-                    required
-                  />
-                </Grid>
-                <Grid xs={6} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Details"
-                    id="details"
-                    value={data.details}
-                    onChange={(e) =>
-                      setData((item) => ({
-                        ...item,
-                        ...{ details: e.target.value },
-                      }))
-                    }
-                    required
-                  />
-                </Grid>
-                <Grid xs={6} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Phone"
-                    id="phone"
-                    value={data.phone}
-                    onChange={(e) =>
-                      setData((item) => ({
-                        ...item,
-                        ...{ phone: e.target.value },
-                      }))
-                    }
-                    required
-                  />
-                </Grid>
-                <Grid xs={6} md={6}>
-                  <TextField
-                    fullWidth
                     label="Email"
                     id="email"
+                    disabled={true}
                     value={data.email}
                     onChange={(e) =>
                       setData((item) => ({
@@ -116,16 +72,16 @@ const ModalStore = (props) => {
                     required
                   />
                 </Grid>
-                <Grid xs={12} md={12}>
+                <Grid xs={6} md={6}>
                   <TextField
                     fullWidth
-                    label="Address"
-                    id="address"
-                    value={data.address}
+                    label="Code"
+                    id="code"
+                    value={data.code}
                     onChange={(e) =>
                       setData((item) => ({
                         ...item,
-                        ...{ address: e.target.value },
+                        ...{ code: e.target.value },
                       }))
                     }
                     required
@@ -148,4 +104,4 @@ const ModalStore = (props) => {
   );
 };
 
-export default ModalStore;
+export default ModalConfirmStore;

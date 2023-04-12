@@ -4,6 +4,7 @@ import { Box, Container, Stack, Typography, SvgIcon, Switch } from "@mui/materia
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { putElements, postElements, getElements, deleteElements } from "src/service/api";
 import ModalStore from "src/sections/store/modal-store";
+import ModalStoreConfirm from "src/sections/store/modal-confirm-store";
 import { STORE } from "../service/endpoints";
 import { showAlert } from "src/sections/global/alert";
 import { useAuthContext } from "src/contexts/auth-context";
@@ -11,20 +12,17 @@ import { ButtonCustom } from "src/sections/global/ButtonCustom";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import TableCustomCatalog from "src/sections/global/table-custom";
-import IconButton from "@mui/material/IconButton";
 import EditIcon from "@heroicons/react/24/solid/PencilIcon";
 import { SeverityPill } from "src/components/severity-pill";
+import IconButton from "@mui/material/IconButton";
+import EmailIcon from "@mui/icons-material/Email";
 
 const Page = () => {
-  const statusMap = {
-    pending: "warning",
-    delivered: "success",
-    refunded: "error",
-  };
   const company = JSON.parse(localStorage.getItem("company"));
   const { user } = useAuthContext();
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
   const [isShow, setIsShow] = useState(0);
   const [row, setRow] = useState({
     strId: "",
@@ -33,6 +31,7 @@ const Page = () => {
     phone: "",
     email: "",
     address: "",
+    code: "",
     isNew: false,
   });
   const columns = [
@@ -42,11 +41,12 @@ const Page = () => {
     { field: "strPhone", headerName: "Phone", width: 200 },
     { field: "strEmail", headerName: "Email", width: 200 },
     {
+      field: "aaa",
       headerName: "Store Status",
       width: 200,
       renderCell: (params) => {
         const handleClick = () => {
-          //changeStatus(params.row);
+          openModalConfirm(params.row);
         };
         switch (params.row.strStatus) {
           case 1:
@@ -57,16 +57,8 @@ const Page = () => {
             return (
               <Stack direction="row" alignItems="center" spacing={0}>
                 <SeverityPill color={"warning"}>Pending</SeverityPill>
-                <IconButton
-                  aria-label="edit"
-                  sx={{ color: company.components.paletteColor.button }}
-                  onClick={handleClick}
-                >
-                  {
-                    <SvgIcon fontSize="small">
-                      <EditIcon />
-                    </SvgIcon>
-                  }
+                <IconButton onClick={handleClick}>
+                  <EmailIcon />
                 </IconButton>
               </Stack>
             );
@@ -132,7 +124,6 @@ const Page = () => {
       setIsShow(0);
       return;
     }
-    console.log(response.response.body.value);
     setRows(response.response.body.value);
   };
 
@@ -169,6 +160,17 @@ const Page = () => {
     }));
   };
 
+  const openModalConfirm = (obj) => {
+    setOpenConfirm(true);
+    setRow((item) => ({
+      ...item,
+      ...{
+        email: obj.strEmail,
+        code: "",
+      },
+    }));
+  };
+
   const SendData = (obj) => {
     if (obj.isNew) {
       create(obj);
@@ -180,9 +182,6 @@ const Page = () => {
   };
 
   const create = async (obj) => {
-    delete obj.strId;
-    delete obj.isNew;
-    console.log(obj);
     var response = await postElements(
       `${STORE.create}`,
       {
@@ -191,7 +190,6 @@ const Page = () => {
       },
       obj
     );
-    console.log(response);
     if (response.status != 201) {
       setOpen(false);
       showAlert(response.response.status.description, "error", "Error");
@@ -203,7 +201,6 @@ const Page = () => {
   };
 
   const update = async (obj) => {
-    console.log(obj);
     var response = await putElements(
       `${STORE.update.replace("{id}", obj.strId)}`,
       {
@@ -212,7 +209,6 @@ const Page = () => {
       },
       obj
     );
-    console.log(response);
     if (response.status != 200) {
       setOpen(false);
       showAlert(response.response.status.description, "error", "Error");
@@ -262,6 +258,28 @@ const Page = () => {
     }
   };
 
+  const confirmStore = async (obj) => {
+    var response = await postElements(
+      `${STORE.confirm}`,
+      {
+        "Content-Type": "application/json",
+        jwt: `${user.id}`,
+      },
+      {
+        email: obj.email,
+        code: obj.code,
+      }
+    );
+    if (response.status != 200) {
+      setOpenConfirm(false);
+      showAlert(response.response.status.description, "error", "Error");
+      return;
+    }
+    getData();
+    setOpenConfirm(false);
+    showAlert("Success", "success", "Success");
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -301,6 +319,16 @@ const Page = () => {
                   }}
                   OnSend={(res) => {
                     SendData(res);
+                  }}
+                />
+                <ModalStoreConfirm
+                  data={row}
+                  open={openConfirm}
+                  OnClose={() => {
+                    setOpenConfirm(false);
+                  }}
+                  OnSend={(res) => {
+                    confirmStore(res);
                   }}
                 />
               </div>
