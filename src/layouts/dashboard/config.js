@@ -11,6 +11,9 @@ import StoreIcon from "@mui/icons-material/Store";
 import { SvgIcon } from "@mui/material";
 import OpenIcon from "@heroicons/react/24/solid/ChevronRightIcon";
 import CloseIcon from "@heroicons/react/24/solid/ChevronDownIcon";
+import CategoryIcon from "@mui/icons-material/Category";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import FolderIcon from "@mui/icons-material/Folder";
 
 export const items = [
   {
@@ -56,6 +59,55 @@ export const items = [
       </SvgIcon>
     ),
     subNav: null,
+  },
+  {
+    title: "Products",
+    microserviceName: "car",
+    path: "/",
+    icon: (
+      <SvgIcon fontSize="small">
+        <InventoryIcon />
+      </SvgIcon>
+    ),
+    iconClosed: (
+      <SvgIcon fontSize="small">
+        <CloseIcon />
+      </SvgIcon>
+    ),
+    iconOpened: (
+      <SvgIcon fontSize="small">
+        <OpenIcon />
+      </SvgIcon>
+    ),
+    subNav: [
+      {
+        title: "Products",
+        path: "/products",
+        icon: (
+          <SvgIcon fontSize="small">
+            <InventoryIcon />
+          </SvgIcon>
+        ),
+      },
+      {
+        title: "Brands",
+        path: "/brands-product",
+        icon: (
+          <SvgIcon fontSize="small">
+            <FolderIcon />
+          </SvgIcon>
+        ),
+      },
+      {
+        title: "Categories",
+        path: "/categories-product",
+        icon: (
+          <SvgIcon fontSize="small">
+            <FolderIcon />
+          </SvgIcon>
+        ),
+      },
+    ],
   },
   {
     title: "Cars",

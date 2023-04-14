@@ -72,3 +72,28 @@ export const STORE = {
   changeStatus: `${BASE_URL}store/change/status/{id}`,
   confirm: `${BASE_URL}store/confirm/email/`,
 };
+
+export const BRANDS_PRODUCT = {
+  list: `${BASE_URL}products/brand/list/`,
+  create: `${BASE_URL}products/brand/create/`,
+  update: `${BASE_URL}products/brand/edit/{id}`,
+  delete: `${BASE_URL}products/brand/delete/{id}`,
+  findById: `${BASE_URL}products/brand/find/{id}`,
+};
+
+export const PRODUCTS = {
+  list: `${BASE_URL}products/list/`,
+  create: `${BASE_URL}products/create/`,
+  update: `${BASE_URL}products/edit/{id}`,
+  changeStatus: `${BASE_URL}products/change/status/{id}`,
+  findByProductId: `${BASE_URL}products/find/{id}`,
+  findById: `${BASE_URL}products/find/client/{id}`,
+};
+
+export const CATEGORY_PRODUCT = {
+  list: `${BASE_URL}products/category/list/`,
+  create: `${BASE_URL}products/category/create/`,
+  update: `${BASE_URL}products/category/edit/{id}`,
+  delete: `${BASE_URL}products/category/delete/{id}`,
+  findById: `${BASE_URL}products/category/find/{id}`,
+};
