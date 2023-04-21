@@ -3,9 +3,9 @@ import Head from "next/head";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { ProductTable } from "src/sections/product/product-table";
-import { getElements } from "src/service/api";
+import { getElements, putElements } from "src/service/api";
 import { postElements } from "src/service/api";
-import EmployeeModal from "src/sections/employee/employees-modal";
+import ProductModal from "src/sections/product/modal-product";
 import { PRODUCTS } from "../service/endpoints";
 import { FILTER } from "../service/endpoints";
 import { showAlert } from "src/sections/global/alert";
@@ -17,16 +17,22 @@ const Page = () => {
   const { user } = useAuthContext();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [employees, setEmployees] = useState([]);
+  const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [isShow, setIsShow] = useState(0);
   const [employee, setEmployee] = useState({
-    empUuid: "",
-    empName: "",
-    empLastname: "",
-    empIdentCard: "",
-    empPhone: "",
-    empEmail: "",
+    prId: "",
+    prName: "",
+    prDescription: "",
+    prPrices: "",
+    prQuantity: "",
+    prStockSecurity: "",
+    productBrandByPrBrandId: "",
+    brand: "",
+    productCategoryByPrCategoryId: "",
+    category: "",
+    prBarCode: "",
+    prAvgCost: "",
     isNew: true,
   });
   const [count, setCount] = useState(0);
@@ -52,7 +58,7 @@ const Page = () => {
       setIsShow(0);
       return;
     }
-    setEmployees(response.response.body.value);
+    setRows(response.response.body.value);
     setCount(response.response.body.totalItems);
     setRowsPerPage(Number(size));
   };
@@ -72,7 +78,7 @@ const Page = () => {
       setIsShow(0);
       return;
     }
-    setEmployees(response.response.body);
+    setRows(response.response.body);
     setCount(response.response.body.length);
     setIsShow(0);
   };
@@ -83,12 +89,24 @@ const Page = () => {
       setEmployee((item) => ({
         ...item,
         ...{
-          empUuid: obj.empUuid,
-          empName: obj.empName,
-          empLastname: obj.empLastname,
-          empIdentCard: obj.empIdentCard,
-          empPhone: obj.empPhone == null ? "" : obj.empPhone,
-          empEmail: obj.empEmail == null ? "" : obj.empEmail,
+          prId: obj.prId,
+          prName: obj.prName,
+          prDescription: obj.prDescription,
+          prPrices: obj.prPrices,
+          prQuantity: obj.prQuantity,
+          prStockSecurity: obj.prStockSecurity,
+          productBrandByPrBrandId: obj.productBrandByPrBrandId.prBrId,
+          brand: {
+            value: obj.productBrandByPrBrandId.prBrId,
+            label: obj.productBrandByPrBrandId.prBrName,
+          },
+          productCategoryByPrCategoryId: obj.productCategoryByPrCategoryId.prcId,
+          category: {
+            value: obj.productCategoryByPrCategoryId.prcId,
+            label: obj.productCategoryByPrCategoryId.prcName,
+          },
+          prBarCode: obj.prBarCode,
+          prAvgCost: obj.prAvgCost,
           isNew: false,
         },
       }));
@@ -98,12 +116,18 @@ const Page = () => {
     setEmployee((item) => ({
       ...item,
       ...{
-        empUuid: "",
-        empName: "",
-        empLastname: "",
-        empIdentCard: "",
-        empPhone: "",
-        empEmail: "",
+        prId: "",
+        prName: "",
+        prDescription: "",
+        prPrices: "",
+        prQuantity: "",
+        prStockSecurity: "",
+        productBrandByPrBrandId: "",
+        brand: "",
+        productCategoryByPrCategoryId: "",
+        category: "",
+        prBarCode: "",
+        prAvgCost: "",
         isNew: true,
       },
     }));
@@ -127,11 +151,15 @@ const Page = () => {
         jwt: `${user.id}`,
       },
       {
-        ident_card: obj.empIdentCard,
-        name: obj.empName,
-        lastname: obj.empLastname,
-        phone: obj.empPhone,
-        email: obj.empEmail,
+        barCode: obj.prBarCode,
+        name: obj.prName,
+        description: obj.prDescription,
+        categoryId: obj.productCategoryByPrCategoryId,
+        brandId: obj.productBrandByPrBrandId,
+        price: obj.prPrices,
+        cost: obj.prAvgCost,
+        quantity: obj.prQuantity,
+        stockSecurity: obj.prStockSecurity,
       }
     );
     if (response.status != 201) {
@@ -145,22 +173,23 @@ const Page = () => {
   };
 
   const update = async (obj) => {
-    var response = await postElements(
-      `${PRODUCTS.update.replace("{id}", obj.empUuid)}`,
+    var response = await putElements(
+      `${PRODUCTS.update.replace("{id}", obj.prId)}`,
       {
         "Content-Type": "application/json",
         jwt: `${user.id}`,
       },
       {
-        ident_card: obj.empIdentCard,
-        name: obj.empName,
-        lastname: obj.empLastname,
-        phone: obj.empPhone,
-        email: obj.empEmail,
+        name: obj.prName,
+        description: obj.prDescription,
+        prices: obj.prPrices,
+        brandId: obj.productBrandByPrBrandId,
+        categoryId: obj.productCategoryByPrCategoryId,
       }
     );
     if (response.status != 200) {
       showAlert(response.response.status.description, "error", "Error");
+      setOpen(false);
       return;
     }
     getData(page);
@@ -209,7 +238,7 @@ const Page = () => {
                     openModal({}, false);
                   }}
                 />
-                <EmployeeModal
+                <ProductModal
                   data={employee}
                   title={"New"}
                   open={open}
@@ -237,7 +266,7 @@ const Page = () => {
             <ProductTable
               isSecondary={0}
               count={count}
-              items={employees}
+              items={rows}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
