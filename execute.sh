@@ -18,7 +18,7 @@ NODE=$(node -v)
 if [ "$NODE" != "v14.20.0" ]; then
   echo "NODE VERSION DISTINCT v14.20.0" >&2
   echo "RUN nvm install --v14.20.0"
-  bash nvm install 14.20.0;
+  nvm install 14.20.0;
   exit 2;
 fi
 
