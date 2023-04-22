@@ -215,7 +215,7 @@ const ProductModal = (props) => {
                 <Grid xs={12} md={4}>
                   <TextField
                     fullWidth
-                    label="AvgCost"
+                    label="Cost"
                     id="prAvgCost"
                     value={data.prAvgCost}
                     onChange={(e) =>

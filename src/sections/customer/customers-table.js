@@ -16,7 +16,7 @@ import {
 import { Scrollbar } from "src/components/scrollbar";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@heroicons/react/24/solid/PencilIcon";
-import SeeIcon from "@heroicons/react/24/solid/EyeIcon";
+import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 
 export const CustomersTable = (props) => {
   const company = JSON.parse(localStorage.getItem("company"));
@@ -103,7 +103,7 @@ export const CustomersTable = (props) => {
                             >
                               {
                                 <SvgIcon fontSize="small">
-                                  <SeeIcon />
+                                  <TimeToLeaveIcon />
                                 </SvgIcon>
                               }
                             </IconButton>
