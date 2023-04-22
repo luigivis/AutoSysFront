@@ -85,6 +85,7 @@ export const PRODUCTS = {
   list: `${BASE_URL}products/list/`,
   create: `${BASE_URL}products/create/`,
   update: `${BASE_URL}products/edit/{id}`,
+  addQuantity: `${BASE_URL}products/add/stock/{id}`,
   changeStatus: `${BASE_URL}products/change/status/{id}`,
   findByProductId: `${BASE_URL}products/find/{id}`,
   findById: `${BASE_URL}products/find/client/{id}`,
