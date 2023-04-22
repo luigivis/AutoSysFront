@@ -12,6 +12,7 @@ import { showAlert } from "src/sections/global/alert";
 import { useAuthContext } from "src/contexts/auth-context";
 import { Search } from "src/sections/global/search";
 import { ButtonCustom } from "src/sections/global/ButtonCustom";
+import ModalAddQuantity from "src/sections/product/modal-add-quantity";
 
 const Page = () => {
   const { user } = useAuthContext();
@@ -19,8 +20,9 @@ const Page = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
   const [isShow, setIsShow] = useState(0);
-  const [employee, setEmployee] = useState({
+  const [data, setData] = useState({
     prId: "",
     prName: "",
     prDescription: "",
@@ -86,7 +88,7 @@ const Page = () => {
     setOpen(true);
     if (isEdit) {
       setEdit("Edit");
-      setEmployee((item) => ({
+      setData((item) => ({
         ...item,
         ...{
           prId: obj.prId,
@@ -113,7 +115,7 @@ const Page = () => {
       return;
     }
     setEdit("New");
-    setEmployee((item) => ({
+    setData((item) => ({
       ...item,
       ...{
         prId: "",
@@ -197,6 +199,29 @@ const Page = () => {
     showAlert("Success", "success", "Success");
   };
 
+  const AddQuantity = async (obj) => {
+    var response = await postElements(
+      `${PRODUCTS.addQuantity.replace("{id}", obj.prId)}`,
+      {
+        "Content-Type": "application/json",
+        jwt: `${user.id}`,
+      },
+      {
+        cost: 0,
+        price: 0,
+        quantity: obj.prQuantity,
+      }
+    );
+    if (response.status != 200) {
+      showAlert(response.response.status.description, "error", "Error");
+      setOpenAdd(false);
+      return;
+    }
+    getData(page);
+    setOpenAdd(false);
+    showAlert("Success", "success", "Success");
+  };
+
   const changeStatus = async (obj) => {
     var response = await getElements(`${EMPLOYEES.changeStatus.replace("{id}", obj.empUuid)}`, {
       "Content-Type": "application/json",
@@ -239,7 +264,7 @@ const Page = () => {
                   }}
                 />
                 <ProductModal
-                  data={employee}
+                  data={data}
                   title={"New"}
                   open={open}
                   edit={edit}
@@ -248,6 +273,16 @@ const Page = () => {
                   }}
                   OnSend={(res) => {
                     SendData(res);
+                  }}
+                />
+                <ModalAddQuantity
+                  data={data}
+                  open={openAdd}
+                  OnSend={(res) => {
+                    AddQuantity(res);
+                  }}
+                  OnClose={() => {
+                    setOpenAdd(false);
                   }}
                 />
               </div>
@@ -276,6 +311,15 @@ const Page = () => {
               }}
               OnChangeStatus={(res) => {
                 changeStatus(res);
+              }}
+              AddQuantity={(res) => {
+                setData((item) => ({
+                  ...item,
+                  ...{
+                    prId: res.prId,
+                  },
+                }));
+                setOpenAdd(true);
               }}
             />
           </Stack>

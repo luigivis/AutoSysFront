@@ -16,7 +16,7 @@ import {
 import { Scrollbar } from "src/components/scrollbar";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@heroicons/react/24/solid/PencilIcon";
-import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 export const ProductTable = (props) => {
   const {
@@ -87,13 +87,19 @@ export const ProductTable = (props) => {
                               </SvgIcon>
                             }
                           </IconButton>
-                          {/* <IconButton aria-label="delete" color="error">
-                            {
-                              <SvgIcon fontSize="small">
-                                <DeleteIcon />
-                              </SvgIcon>
-                            }
-                          </IconButton> */}
+                          {
+                            <IconButton
+                              aria-label="delete"
+                              sx={{ color: company.components.paletteColor.button }}
+                              onClick={() => props.AddQuantity(item)}
+                            >
+                              {
+                                <SvgIcon fontSize="small">
+                                  <AddCircleIcon />
+                                </SvgIcon>
+                              }
+                            </IconButton>
+                          }
                         </Stack>
                       ) : (
                         <Button
