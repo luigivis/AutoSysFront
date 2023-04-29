@@ -61,13 +61,13 @@ export const InventoryTable = (props) => {
                     data = <SeverityPill color={"success"}>Confirmed</SeverityPill>;
                     break;
                   case 2:
-                    data = <SeverityPill color={"warnign"}>Pending</SeverityPill>;
+                    data = <SeverityPill color={"warning"}>Pending</SeverityPill>;
                     break;
                   case 3:
-                    data = <SeverityPill color={"warnign"}>Pending Str</SeverityPill>;
+                    data = <SeverityPill color={"warning"}>Pending Str</SeverityPill>;
                     break;
                   case 4:
-                    data = <SeverityPill color={"warnign"}>Cancel Str</SeverityPill>;
+                    data = <SeverityPill color={"warning"}>Cancel Str</SeverityPill>;
                     break;
                   case 6:
                     data = <SeverityPill color={"error"}>Cancel Expired</SeverityPill>;
