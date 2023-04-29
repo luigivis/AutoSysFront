@@ -98,3 +98,21 @@ export const CATEGORY_PRODUCT = {
   delete: `${BASE_URL}products/category/delete/{id}`,
   findById: `${BASE_URL}products/category/find/{id}`,
 };
+
+export const INVENTORY = {
+  list: `${BASE_URL}inventory/transfer/list/`,
+  cancelInventory: `${BASE_URL}inventory/transfer/cancel/{id}`,
+  confirmInventory: `${BASE_URL}inventory/transfer/confirm/{id}`,
+  reconFirmInventory: `${BASE_URL}inventory/transfer/reconfirm/{id}`,
+  findById: `${BASE_URL}inventory/transfer/find/{id}`,
+  create: `${BASE_URL}inventory/create/`,
+  update: `${BASE_URL}inventory/edit/{id}`,
+  changeStatus: `${BASE_URL}inventory/change/status/{id}`,
+  findByInventoryId: `${BASE_URL}inventory/find/{id}`,
+};
+
+export const BATCH = {
+  list: `${BASE_URL}inventory/batch/list/`,
+  create: `${BASE_URL}inventory/batch/create/`,
+  findByProductId: `${BASE_URL}inventory/batch/find/product/{id}`,
+};
