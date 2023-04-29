@@ -11,9 +11,9 @@ import StoreIcon from "@mui/icons-material/Store";
 import { SvgIcon } from "@mui/material";
 import OpenIcon from "@heroicons/react/24/solid/ChevronRightIcon";
 import CloseIcon from "@heroicons/react/24/solid/ChevronDownIcon";
-import CategoryIcon from "@mui/icons-material/Category";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import FolderIcon from "@mui/icons-material/Folder";
+import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 
 export const items = [
   {
@@ -61,12 +61,23 @@ export const items = [
     subNav: null,
   },
   {
+    title: "Inventory",
+    path: "/inventories",
+    microserviceName: "client",
+    icon: (
+      <SvgIcon fontSize="small">
+        <InventoryIcon />
+      </SvgIcon>
+    ),
+    subNav: null,
+  },
+  {
     title: "Products",
     microserviceName: "car",
     path: "/",
     icon: (
       <SvgIcon fontSize="small">
-        <InventoryIcon />
+        <DonutSmallIcon />
       </SvgIcon>
     ),
     iconClosed: (
