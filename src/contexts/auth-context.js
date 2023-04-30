@@ -124,12 +124,14 @@ export const AuthProvider = (props) => {
       console.error(err);
     }
 
+    console.log(response.response);
+
     const user = {
       id: `${response.headers}`,
       avatar: "/assets/avatars/avatar-anika-visser.png",
       name: `${response.response.status.description}`,
       email: "anika.visser@devias.io",
-      storeName: `${response.response.body === null ? "" : response.response.body.storeName}`,
+      storeName: `${response.response.body == null ? "" : response.response.body.storeName}`,
     };
     localStorage.setItem("userStorage", JSON.stringify(user));
 

@@ -14,8 +14,20 @@ import CloseIcon from "@heroicons/react/24/solid/ChevronDownIcon";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import FolderIcon from "@mui/icons-material/Folder";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 export const items = [
+  {
+    title: "Dashboard",
+    path: "/",
+    microserviceName: "users",
+    icon: (
+      <SvgIcon fontSize="small">
+        <DashboardIcon />
+      </SvgIcon>
+    ),
+    subNav: null,
+  },
   {
     title: "Users",
     path: "/users",
@@ -74,7 +86,6 @@ export const items = [
   {
     title: "Products",
     microserviceName: "car",
-    path: "/",
     icon: (
       <SvgIcon fontSize="small">
         <DonutSmallIcon />
@@ -123,7 +134,6 @@ export const items = [
   {
     title: "Cars",
     microserviceName: "car",
-    path: "/",
     icon: (
       <SvgIcon fontSize="small">
         <TimeToLeaveIcon />
