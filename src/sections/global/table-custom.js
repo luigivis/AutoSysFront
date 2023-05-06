@@ -10,6 +10,7 @@ export default function TableCustomCatalog({ rows, columns }) {
       brandName: row.modelBrandId == null ? "" : row.modelBrandId.brandName,
       productConfirm: row.itdIbtId == null ? "" : row.itdIbtId.productsByIbtPrId.prName,
       productConfirmDetail: row.productsByIbtPrId == null ? "" : row.productsByIbtPrId.prName,
+      itdIbtIdLote: row.itdIbtId == null ? "" : row.itdIbtId.ibtId,
     };
   });
   return (

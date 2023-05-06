@@ -163,7 +163,7 @@ const Page = () => {
               <div>
                 <ButtonCustom
                   openModal={() => {
-                    router.push("/car/new-car");
+                    router.push("/inventory/new-inventory");
                   }}
                 />
               </div>
